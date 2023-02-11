@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-bob-core.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/core.php';
 
 /**
  * Begins execution of the plugin.
