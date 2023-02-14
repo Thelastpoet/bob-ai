@@ -38,7 +38,7 @@ class Bob_Functions {
                     foreach ( $terms as $term ) {
                         // Check if the term description doesn't exist
                         if ( ! $this->term_description_exists( $term->term_id, $taxonomy_setting ) ) {
-                            // Create the prompt for the OpenAI API
+                            // Create the prompt for OpenAI API
                             $prompt = sprintf( 'Provide an accurate description for %s %s', $taxonomy_setting, $term->name );
                             // Generate the description using the OpenAI API
                             $description = $this->openai->generate_description( $prompt, $api_key );
