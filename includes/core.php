@@ -4,8 +4,8 @@
  *
  * @package Bob
  */
-class Bob_Core {
 
+class Bob_Core {
 	/**
 	 * The single instance of the class.
 	 *
@@ -35,6 +35,13 @@ class Bob_Core {
 	private $settings;
 
 	/**
+	 * The instance of the SEO Optimizer class.
+	 *
+	 * @var Bob_SEO_Optimizer
+	 */
+	private $seo_optimizer;
+
+	/**
 	 * Initialize the class and set its properties.
 	 */
 	public function __construct() {
@@ -42,11 +49,13 @@ class Bob_Core {
 		require_once plugin_dir_path( __FILE__ ) . 'openai.php';
 		require_once plugin_dir_path( __FILE__ ) . 'functions.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/settings.php';
+		require_once plugin_dir_path( __FILE__ ) . 'seo-optimization.php';
 
 		// Initialize classes.
-		$this->openai   = new Bob_OpenAI();
-		$this->functions = new Bob_Functions();
-		$this->settings  = new Bob_Settings();
+		$this->openai        = new Bob_OpenAI();
+		$this->functions     = new Bob_Functions();
+		$this->settings      = new Bob_Settings();
+		$this->seo_optimizer = new Bob_SEO_Optimizer();
 	}
 
 	/**
