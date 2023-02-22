@@ -5,7 +5,7 @@
  * @package Bob
  */
 
-class Bob_Core {
+ class Bob_Core {
 	/**
 	 * The single instance of the class.
 	 *
@@ -75,5 +75,11 @@ class Bob_Core {
 	 */
 	public function run() {
 		// Add plugin functionality here.
+
+		// Schedule the SEO optimization cron job.
+		$this->seo_optimizer->schedule_cron();
+
+		// Update the first batch of posts.
+		$this->seo_optimizer->optimize_posts();
 	}
 }

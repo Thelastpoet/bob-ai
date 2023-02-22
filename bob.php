@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * The core plugin class.
+ */
 require_once plugin_dir_path( __FILE__ ) . 'includes/core.php';
 
 /**
@@ -23,8 +26,8 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/core.php';
  *
  * @since 1.0.0
  */
-function run_bob() {
-    $bob = new Bob_Core();
-    $bob->run();
+function bob_activate_plugin() {
+    $core = Bob_Core::get_instance();
+    $core->run();
 }
-run_bob();
+register_activation_hook( __FILE__, 'bob_activate_plugin' );
