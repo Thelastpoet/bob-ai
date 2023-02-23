@@ -26,8 +26,8 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/core.php';
  *
  * @since 1.0.0
  */
-function bob_activate_plugin() {
-    $core = Bob_Core::get_instance();
-    $core->run();
+function run_bob() {
+    $bob = new Bob_Core();
+    $bob->run();
 }
-register_activation_hook( __FILE__, 'bob_activate_plugin' );
+run_bob();

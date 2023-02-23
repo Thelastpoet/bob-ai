@@ -9,7 +9,7 @@ class Bob_Functions {
         $this->openai = new Bob_OpenAI();
 
         // Add the update_post_description function as an action to be triggered when the WordPress environment is loaded
-        add_action( 'wp', array( $this, 'update_post_description' ) );
+        // add_action( 'wp', array( $this, 'update_post_description' ) );
     }
 
     public function update_post_description() {
