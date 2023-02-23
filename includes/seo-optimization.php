@@ -83,7 +83,7 @@ class Bob_SEO_Optimizer {
     
         // Reschedule the event to run again later in the day.
         $next_scheduled_time = time() + rand( 3600, 10800 ); // Random delay between 1 and 3 hours
-        wp_schedule_single_event( $next_scheduled_time, 'bob_seo_optimizer_single' );
+    	wp_schedule_single_event( $next_scheduled_time, 'bob_seo_optimizer_daily' );
     }
 
     /**
