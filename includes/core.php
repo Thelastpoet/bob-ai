@@ -45,17 +45,21 @@
 	 * Initialize the class and set its properties.
 	 */
 	public function __construct() {
+		
 		// Include required files.
 		require_once plugin_dir_path( __FILE__ ) . 'openai.php';
 		require_once plugin_dir_path( __FILE__ ) . 'functions.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/settings.php';
 		require_once plugin_dir_path( __FILE__ ) . 'seo-optimization.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/openai-settings.php';
+    	require_once plugin_dir_path( __FILE__ ) . 'admin/post-type-settings.php';
+
 
 		// Initialize classes.
 		$this->openai        = new Bob_OpenAI();
 		$this->functions     = new Bob_Functions();
-		$this->settings      = new Bob_Settings();
 		$this->seo_optimizer = new Bob_SEO_Optimizer();
+		$this->settings = new Bob_Settings( new Bob_OpenAI_Settings(), new Bob_Post_Type_Settings() );		
 	}
 
 	/**
@@ -76,10 +80,5 @@
 	public function run() {
 		// Add plugin functionality here.
 
-		// Schedule the SEO optimization cron job.
-		$this->seo_optimizer->schedule_cron();
-
-		// Update the first batch of posts.
-		$this->seo_optimizer->optimize_posts();
 	}
 }

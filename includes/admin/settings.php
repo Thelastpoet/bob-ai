@@ -81,7 +81,7 @@ class Bob_Settings {
             __( 'Post Type', 'bob' ),
             'manage_options',
             'bob-post-type-settings',
-            array( $this->post_type_settings, 'render_post_type_settings_page' )
+            array( $this->post_type_settings, 'render_post_typesettings_page' )
         );
     }
     
