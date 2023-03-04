@@ -48,7 +48,7 @@ public function render_openai_section() {
  */
 public function render_openai_api_key_field() {
 	$api_key = get_option( 'bob-openai-api-key' );
-	echo sprintf( '<input type="text" name="bob-openai-api-key" value="%s" />', esc_attr( $api_key ) );
+	echo sprintf( '<input type="password" name="bob-openai-api-key" value="%s" />', esc_attr( $api_key ) );
 }
 
 /**

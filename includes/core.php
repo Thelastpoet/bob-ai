@@ -51,6 +51,7 @@
 		require_once plugin_dir_path( __FILE__ ) . 'functions.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/settings.php';
 		require_once plugin_dir_path( __FILE__ ) . 'seo-optimization.php';
+		require_once plugin_dir_path( __FILE__ ) . 'admin/seo-settings.php';
 		require_once plugin_dir_path( __FILE__ ) . 'admin/openai-settings.php';
     	require_once plugin_dir_path( __FILE__ ) . 'admin/post-type-settings.php';
 
@@ -59,7 +60,7 @@
 		$this->openai        = new Bob_OpenAI();
 		$this->functions     = new Bob_Functions();
 		$this->seo_optimizer = new Bob_SEO_Optimizer();
-		$this->settings = new Bob_Settings( new Bob_OpenAI_Settings(), new Bob_Post_Type_Settings() );		
+		$this->settings = new Bob_Settings( new Bob_OpenAI_Settings(), new Bob_Post_Type_Settings(), new Bob_SEO_Settings );		
 	}
 
 	/**

@@ -15,7 +15,7 @@ class Bob_OpenAI {
         }
 
         if ( ! $model ) {
-            $model = 'text-curie-001';
+            $model = 'text-davinci-003';
         }
 
         if ( ! $temperature ) {
