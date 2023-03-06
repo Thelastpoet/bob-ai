@@ -187,7 +187,7 @@ class Bob_SEO_Optimizer {
         // Check if SEO description is empty or not.
         $seo_meta_key = $this->get_seo_meta_key();
         $seo_description = get_post_meta( $post_id, $seo_meta_key, true );
-        if ( empty( $seo_description ) ) {
+        if ( empty( $seo_description ) || strlen( $seo_description ) < 100 )  {
             $seo_description = $post_excerpt;
         }
     
