@@ -44,7 +44,7 @@ class Bob_Settings {
         $this->file = __FILE__;
         $this->dir = dirname( $this->file );
         $this->assets_dir = trailingslashit( $this->dir ) . 'assets';
-        $this->assets_url = esc_url( trailingslashit( plugins_url( '/assets/', $this->file ) ) );
+        $this->assets_url = esc_url( trailingslashit( plugins_url( '../..assets/', $this->file ) ) );
         
         $this->openai_settings    = $openai_settings;
         $this->post_type_settings = $post_type_settings;

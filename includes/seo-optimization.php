@@ -13,6 +13,7 @@ class Bob_SEO_Optimizer {
     private $order;
     private $meta_max_length;
     private $seo_plugin;
+    private $language;
 	
 	/**
      * Initializes the class.
@@ -24,6 +25,7 @@ class Bob_SEO_Optimizer {
         $this->post_type = get_option( 'bob_seo_post_type', 'post' );
         $this->order = get_option( 'bob_seo_order', 'ASC' );
         $this->meta_max_length = get_option( 'bob_seo_max_length', 160 );
+        $this->language = $this->detect_language();
 
         add_action( 'init', array( $this, 'schedule_bob_seo_event' ) );
         add_action( 'bob_seo_optimizer_daily', array( $this, 'update_seo_data_daily' ) );
@@ -66,6 +68,25 @@ class Bob_SEO_Optimizer {
         return $seo_meta_key;
     }
 
+    /**
+     * Detect the language of the blog.
+     *
+     * @return string The language code.
+     */
+    public function detect_language() {
+        // Get the site language setting.
+        $language = get_bloginfo( 'language' );
+
+        // If the language is not set, default to English.
+        if ( empty( $language ) ) {
+            $language = 'en';
+        }
+
+        // Extract the language code from the site language setting.
+        $language = substr( $language, 0, 2 );
+
+        return $language;
+    }
 
     public function update_seo_data_daily() {
         global $wpdb;
@@ -176,6 +197,7 @@ class Bob_SEO_Optimizer {
                 'title' => $post_title,
                 'excerpt' => $post_excerpt,
                 'max_length' => $this->meta_max_length,
+                'language' => $language,
             ),
             esc_html__( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
         );
