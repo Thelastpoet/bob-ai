@@ -1,64 +1,85 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Bob_OpenAI {
-    public function generate_description( $prompt, $api_key ) {
-        $max_tokens = get_option( 'bob-openai-max-tokens' );
-        $model = get_option( 'bob-openai-model' );
-        $temperature = get_option( 'bob-openai-temperature' );
-        $top_p = get_option( 'bob-openai-top-p' );
-        $frequency_penalty = get_option( 'bob-openai-frequency-penalty' );
-        $presence_penalty = get_option( 'bob-openai-presence-penalty' );
+    private $api_endpoint = 'https://api.openai.com/v1/completions';
+    private $api_key;
+    private $http_args;
 
-        // Set default values if options are not set
-        if ( ! $max_tokens ) {
-            $max_tokens = 256;
-        }
+    /**
+     * Initializes the OpenAI class and sets the API key and HTTP request arguments.
+     */
+    public function __construct() {
+        $this->api_key = get_option( 'bob-openai-api-key' );
 
-        if ( ! $model ) {
-            $model = 'text-davinci-003';
-        }
+        $this->http_args = array(
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $this->api_key,
+            ),
+        );
+    }
 
-        if ( ! $temperature ) {
-            $temperature = 0.7;
-        }
+    /**
+     * Sends a request to the OpenAI API and returns the generated text.
+     *
+     * @param string $prompt The prompt for the API request.
+     * @param array  $args   Optional arguments for the API request.
+     *
+     * @return string|WP_Error The generated text or a WP_Error object on failure.
+     */
+    public function generate_description( $prompt, $args = array() ) {
+        // Set default arguments.
+        $defaults = array(
+            'max_tokens' => 256,
+            'model' => 'text-davinci-003',
+            'temperature' => 0.7,
+            'top_p' => 1,
+            'frequency_penalty' => 0,
+            'presence_penalty' => 0,
+        );
 
-        if ( ! $top_p ) {
-            $top_p = 1;
-        }
+        // Merge arguments with defaults.
+        $args = wp_parse_args( $args, $defaults );
 
-        if ( ! $frequency_penalty ) {
-            $frequency_penalty = 0;
-        }
+        // Sanitize and validate arguments.
+        $max_tokens = absint( $args['max_tokens'] );
+        $model = sanitize_text_field( $args['model'] );
+        $temperature = floatval( $args['temperature'] );
+        $top_p = floatval( $args['top_p'] );
+        $frequency_penalty = floatval( $args['frequency_penalty'] );
+        $presence_penalty = floatval( $args['presence_penalty'] );
 
-        if ( ! $presence_penalty ) {
-            $presence_penalty = 0;
-        }
+        // Prepare the request body.
+        $request_body = array(
+            'prompt' => $prompt,
+            'max_tokens' => $max_tokens,
+            'model' => $model,
+            'temperature' => $temperature,
+            'top_p' => $top_p,
+            'frequency_penalty' => $frequency_penalty,
+            'presence_penalty' => $presence_penalty,
+        );
 
-        $options = [
-            'headers' => [
-                'Content-Type'  => 'application/json',
-                'Authorization' => 'Bearer ' . $api_key
-            ],
-            'body' => json_encode ([
-                'prompt' => $prompt,
-                'max_tokens' => intval($max_tokens),
-                'model' => $model,
-                'temperature' => floatval($temperature),
-                'top_p' => floatval($top_p),
-                'frequency_penalty' => floatval($frequency_penalty),
-                'presence_penalty' => floatval($presence_penalty)
-            ])
-        ];
+        // Send the request using the HTTP API.
+        $response = wp_safe_remote_post( $this->api_endpoint, array_merge( $this->http_args, array( 'body' => wp_json_encode( $request_body ) ) ) );
 
-        $response = wp_remote_post( 'https://api.openai.com/v1/completions', $options );
-
-        // Check if there was an error with the API request
         if ( is_wp_error( $response ) ) {
-            return 'Error: ' . $response->get_error_message();
+            return $response;
         }
 
-        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+        // Check if the response was successful.
+        $status_code = wp_remote_retrieve_response_code( $response );
+        if ( $status_code !== 200 ) {
+            return new WP_Error( 'openai_api_error', sprintf( 'Error %d: %s', $status_code, wp_remote_retrieve_response_message( $response ) ) );
+        }
 
-        return $body['choices'][0]['text'];
+        // Get the response body and return the generated text.
+        $response_body = json_decode( wp_remote_retrieve_body( $response ), true );
+        return $response_body['choices'][0]['text'];
     }
 }

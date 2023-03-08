@@ -11,6 +11,8 @@
  * @package Bob
  */
 
+namespace Bob;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -27,7 +29,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/core.php';
  * @since 1.0.0
  */
 function run_bob() {
-    $bob = new Bob_Core();
+    $bob = new Bob\Core();
     $bob->run();
 }
 run_bob();
@@ -47,4 +49,4 @@ function bob_deactivate() {
     delete_option( 'bob_modified_term_ids' );
     wp_clear_scheduled_hook( 'bob_seo_optimizer_daily' );
 }
-register_deactivation_hook( __FILE__, 'bob_deactivate' );
+register_deactivation_hook( __FILE__, 'Bob\bob_deactivate' );
