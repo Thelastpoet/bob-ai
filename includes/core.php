@@ -1,11 +1,16 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * The core functionality of the plugin.
  *
  * @package Bob
  */
 
- class Bob_Core {
+class Bob_Core {
 	/**
 	 * The single instance of the class.
 	 *
@@ -19,13 +24,6 @@
 	 * @var Bob_OpenAI
 	 */
 	private $openai;
-
-	/**
-	 * The instance of the Functions class.
-	 *
-	 * @var Bob_Functions
-	 */
-	private $functions;
 
 	/**
 	 * The instance of the Settings class.
@@ -45,22 +43,19 @@
 	 * Initialize the class and set its properties.
 	 */
 	public function __construct() {
-		
 		// Include required files.
-		require_once plugin_dir_path( __FILE__ ) . 'openai.php';
-		require_once plugin_dir_path( __FILE__ ) . 'functions.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/settings.php';
-		require_once plugin_dir_path( __FILE__ ) . 'seo-optimization.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/seo-settings.php';
-		require_once plugin_dir_path( __FILE__ ) . 'admin/openai-settings.php';
-    	require_once plugin_dir_path( __FILE__ ) . 'admin/post-type-settings.php';
-
+		foreach ( glob( plugin_dir_path( __FILE__ ) . 'includes/*.php' ) as $file ) {
+			require_once $file;
+		}
 
 		// Initialize classes.
 		$this->openai        = new Bob_OpenAI();
-		$this->functions     = new Bob_Functions();
 		$this->seo_optimizer = new Bob_SEO_Optimizer();
-		$this->settings = new Bob_Settings( new Bob_OpenAI_Settings(), new Bob_Post_Type_Settings(), new Bob_SEO_Settings );		
+		$this->settings      = new Bob_Settings(
+			new Bob_OpenAI_Settings(),
+			new Bob_Post_Type_Settings(),
+			new Bob_SEO_Settings()
+		);
 	}
 
 	/**
@@ -80,6 +75,5 @@
 	 */
 	public function run() {
 		// Add plugin functionality here.
-
 	}
 }
