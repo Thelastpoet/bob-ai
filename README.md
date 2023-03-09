@@ -1,31 +1,44 @@
-Bob Plugin
-A WordPress plugin that optimizes and updates meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.
+=== Bob ===
 
-Description
-Bob is a powerful WordPress plugin that leverages OpenAI to automatically optimize and update your meta descriptions for improved search engine visibility and higher click-through rates. With Bob, you can easily improve your website's SEO and attract more organic traffic.
+Contributors: ammanulah
+Tags: SEO, OpenAI, meta descriptions, optimization
+Requires at least: 5.0
+Tested up to: 5.8
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Features
-Automatic meta description optimization using OpenAI
-Easy-to-use settings page to configure the plugin
-Customizable OpenAI API key and model settings
-Powerful SEO optimization tools to improve your website's ranking
-Lightweight and efficient code for maximum performance
-Compatible with the latest version of WordPress
-Installation
-Download the plugin ZIP file from the official WordPress repository
-Log in to your WordPress website and navigate to the Plugins page
-Click the "Add New" button and select "Upload Plugin"
-Choose the ZIP file you downloaded and click "Install Now"
-Once the installation is complete, click "Activate Plugin" to enable Bob on your website
-Usage
-Navigate to the Bob settings page in your WordPress dashboard
-Configure the plugin settings to match your preferences
-Save your changes and let Bob automatically optimize your meta descriptions
-Support
-If you have any questions or issues with the Bob plugin, please feel free to contact us via the official WordPress support forums or by emailing us at support@bobplugin.com.
+Bob is a WordPress plugin that uses OpenAI to optimize and update meta descriptions, improving search engine visibility and boosting click-through rates.
 
-Contributions
-We welcome contributions from the community! If you have any suggestions or would like to contribute to the development of Bob, please submit a pull request on GitHub.
+== Description ==
 
-License
-Bob is released under the GPL-2.0+ License. See LICENSE.txt for more information.
+Bob is a powerful WordPress plugin that makes use of OpenAI to optimize and update meta descriptions. This improves search engine visibility and can boost click-through rates by providing more accurate, compelling, and relevant meta descriptions.
+
+With Bob, you can automate the process of optimizing your meta descriptions, saving you time and effort while improving the performance of your website. Bob is easy to use and can be configured to work with your existing WordPress setup in just a few clicks.
+
+== Installation ==
+
+Download the Bob plugin from the WordPress repository.
+Upload the plugin to your WordPress website.
+Activate the plugin.
+Configure the plugin settings to suit your needs.
+== Frequently Asked Questions ==
+
+Q. What is OpenAI?
+A. OpenAI is an artificial intelligence research laboratory consisting of the for-profit corporation OpenAI LP and its parent company, the non-profit OpenAI Inc.
+
+Q. How does Bob optimize meta descriptions?
+A. Bob uses OpenAI's powerful natural language processing algorithms to analyze your content and generate optimized meta descriptions that are more relevant, accurate, and compelling.
+
+Q. Can I use Bob with my existing WordPress setup?
+A. Yes, Bob can be easily configured to work with your existing WordPress setup in just a few clicks.
+
+== Changelog ==
+
+= 1.0.0 =
+
+Initial release of the Bob plugin.
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial release of the Bob plugin. No upgrade necessary.
