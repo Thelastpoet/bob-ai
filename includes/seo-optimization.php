@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Class for optimizing SEO data for posts.
  *
@@ -12,21 +17,18 @@ class Bob_SEO_Optimizer {
     private $post_type;
     private $order;
     private $meta_max_length;
-    private $seo_plugin;
-    private $language;
-	
+    	
 	/**
      * Initializes the class.
      */
     public function __construct() {
-        $this->posts_per_batch = get_option( 'bob_seo_posts_per_batch', 5 );
-        $this->cron_schedule = get_option( 'bob_seo_cron_schedule', 'daily' );
-        $this->previous_mod_date = get_option( 'bob_modified_date', '' );
-        $this->post_type = get_option( 'bob_seo_post_type', 'post' );
-        $this->order = get_option( 'bob_seo_order', 'ASC' );
-        $this->meta_max_length = get_option( 'bob_seo_max_length', 160 );
-        $this->language = $this->detect_language();
-
+        $this->posts_per_batch = 5;
+        $this->cron_schedule = 'daily';
+        $this->previous_mod_date = 90 * DAY_IN_SECONDS;
+        $this->post_type = 'post';
+        $this->order = 'ASC';
+        $this->meta_max_length = 160;
+        
         add_action( 'init', array( $this, 'schedule_bob_seo_event' ) );
         add_action( 'bob_seo_optimizer_daily', array( $this, 'update_seo_data_daily' ) );
     }
@@ -36,56 +38,6 @@ class Bob_SEO_Optimizer {
         if ( ! wp_next_scheduled( 'bob_seo_optimizer_daily' ) ) {
             wp_schedule_event( time(), $this->cron_schedule, 'bob_seo_optimizer_daily' );
         }
-    }
-
-    /**
-     * Get the SEO meta key for the selected plugin.
-     *
-     * @return string The SEO meta key.
-     */
-    public function get_seo_meta_key() {
-        // Get the SEO meta key from the selected SEO plugin.
-        $seo_plugin = get_option( 'bob_seo_optimizer_seo_plugin', 'yoast_seo' );
-        switch ( $seo_plugin ) {
-            case 'rank_math':
-                $seo_meta_key = 'rank_math_description';
-                break;
-            case 'seopress':
-                $seo_meta_key = '_seopress_titles_desc';
-                break;
-            case 'all_in_one_seo':
-                $seo_meta_key = '_aioseop_description';
-                break;
-            case 'the_seo_framework':
-                $seo_meta_key = '_genesis_description';
-                break;
-            case 'yoast_seo':
-            default:
-                $seo_meta_key = '_yoast_wpseo_metadesc';
-                break;
-        }
-
-        return $seo_meta_key;
-    }
-
-    /**
-     * Detect the language of the blog.
-     *
-     * @return string The language code.
-     */
-    public function detect_language() {
-        // Get the site language setting.
-        $language = get_bloginfo( 'language' );
-
-        // If the language is not set, default to English.
-        if ( empty( $language ) ) {
-            $language = 'en';
-        }
-
-        // Extract the language code from the site language setting.
-        $language = substr( $language, 0, 2 );
-
-        return $language;
     }
 
     public function update_seo_data_daily() {
@@ -101,11 +53,11 @@ class Bob_SEO_Optimizer {
             'meta_query' => array(
                 'relation' => 'OR',
                 array(
-                    'key' => $this->get_seo_meta_key(),
+                    'key' => '_yoast_wpseo_metadesc',
                     'compare' => 'NOT EXISTS',
                 ),
                 array(
-                    'key' => $this->get_seo_meta_key(),
+                    'key' => '_yoast_wpseo_metadesc',
                     'value' => '',
                     'compare' => '=',
                 ),
@@ -118,7 +70,7 @@ class Bob_SEO_Optimizer {
                 WHERE {$wpdb->postmeta}.post_id = {$wpdb->posts}.ID
                 AND {$wpdb->postmeta}.meta_key = %s
             )",
-            $this->get_seo_meta_key()
+            '_yoast_wpseo_metadesc'
         );
     
         $query_args['where'] = $where_clause;
@@ -185,7 +137,7 @@ class Bob_SEO_Optimizer {
         $post_excerpt = wp_trim_words( get_the_excerpt( $post_id ), 25, '...' );
     
         // Check if SEO description is empty or not.
-        $seo_meta_key = $this->get_seo_meta_key();
+        $seo_meta_key = '_yoast_wpseo_metadesc';
         $seo_description = get_post_meta( $post_id, $seo_meta_key, true );
         if ( empty( $seo_description ) || strlen( $seo_description ) < 100 )  {
             $seo_description = $post_excerpt;
@@ -197,7 +149,6 @@ class Bob_SEO_Optimizer {
                 'title' => $post_title,
                 'excerpt' => $post_excerpt,
                 'max_length' => $this->meta_max_length,
-                'language' => $language,
             ),
             esc_html__( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
         );
@@ -212,4 +163,4 @@ class Bob_SEO_Optimizer {
             update_post_meta( $post_id, $seo_meta_key, $new_seo_description );
         }
     }
-}
+}    
