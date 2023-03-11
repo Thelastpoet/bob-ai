@@ -11,8 +11,6 @@
  * @package Bob
  */
 
-namespace Bob;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +27,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/core.php';
  * @since 1.0.0
  */
 function run_bob() {
-    $bob = new Bob\Core();
+    $bob = Bob_Core::get_instance();
     $bob->run();
 }
 run_bob();
@@ -42,11 +40,18 @@ run_bob();
 function bob_deactivate() {
     // Delete any options added by the plugin
     delete_option( 'bob_openai_api_key' );
-    delete_option( 'bob_taxonomy_terms_per_batch' );
-    delete_option( 'bob_taxonomy_cron_schedule' );
-    delete_option( 'bob_last_modified_date' );
-    delete_option( 'bob_modified_terms' );
-    delete_option( 'bob_modified_term_ids' );
-    wp_clear_scheduled_hook( 'bob_seo_optimizer_daily' );
+    wp_clear_scheduled_hook( 'bob_seo_optimizer' );
 }
-register_deactivation_hook( __FILE__, 'Bob\bob_deactivate' );
+register_deactivation_hook( __FILE__, 'bob_deactivate' );
+
+/**
+ * Schedules the SEO optimization event on activation.
+ *
+ * @since 1.0.0
+ */
+register_activation_hook( __FILE__, 'bob_schedule_seo_update' );
+
+function bob_schedule_seo_update() {
+    $optimizer = new Bob_SEO_Optimizer();
+    $optimizer->update_seo_data_daily();
+}

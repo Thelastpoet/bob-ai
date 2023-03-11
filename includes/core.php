@@ -12,15 +12,17 @@ class Bob_Core {
 	private $seo_optimizer;
 
 	public function __construct() {
-		foreach ( glob( plugin_dir_path( __FILE__ ) . 'includes/*.php' ) as $file ) {
-			require_once $file;
-		}
-
+		
+		require_once plugin_dir_path( __FILE__ ) . 'bob-openai.php';
+		require_once plugin_dir_path( __FILE__ ) . 'bob-optimizer.php';
+		require_once plugin_dir_path( __FILE__ ) . '/admin/bob-config.php';
+		require_once plugin_dir_path( __FILE__ ) . '/admin/bob-settings.php';		
+		
 		$this->openai        = new Bob_OpenAI();
 		$this->seo_optimizer = new Bob_SEO_Optimizer();
 		$this->settings      = new Bob_Settings(
-			new Bob_OpenAI_Settings(),
-			new Bob_SEO_Settings()
+			new Bob_Config()
+			
 		);
 	}
 
@@ -30,7 +32,7 @@ class Bob_Core {
 		}
 		return self::$instance;
 	}
-
+	
 	public function run() {
 		// Add plugin functionality here.
 	}
