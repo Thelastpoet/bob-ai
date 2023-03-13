@@ -13,16 +13,13 @@ class Bob_Core {
 
 	public function __construct() {
 		
-		require_once plugin_dir_path( __FILE__ ) . 'bob-openai.php';
-		require_once plugin_dir_path( __FILE__ ) . 'bob-optimizer.php';
-		require_once plugin_dir_path( __FILE__ ) . '/admin/bob-config.php';
-		require_once plugin_dir_path( __FILE__ ) . '/admin/bob-settings.php';		
+		require_once BOB_PLUGIN_DIR . 'bob-openai.php';
+		require_once BOB_PLUGIN_DIR . 'bob-optimizer.php';
+		require_once BOB_PLUGIN_DIR . 'admin/bob-settings.php';		
 		
 		$this->openai        = new Bob_OpenAI();
 		$this->seo_optimizer = new Bob_SEO_Optimizer();
-		$this->settings      = new Bob_Settings(
-			new Bob_Config()
-			
+		$this->settings      = new Bob_Settings(			
 		);
 	}
 

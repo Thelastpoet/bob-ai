@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'bob-meta-checker.php';
+require_once BOB_PLUGIN_DIR . 'includes/bob-meta-checker.php';
 
 /**
  * Class for optimizing SEO data for posts.
