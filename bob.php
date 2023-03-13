@@ -1,9 +1,9 @@
 <?php
+
 /**
  * Plugin Name: Bob
- * Plugin URI: https://nabaleka.com
  * Description: A WordPress plugin that optimizes and updates meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.
- * Version: BOB_VERSION
+ * Version: 1.0.0
  * Author: Ammanulah Emmanuel
  * Author URI: https://nabaleka.com
  * License: GPLv2 or later
@@ -27,7 +27,7 @@ define( 'BOB_PLUGIN_URL', plugin_dir_path( __FILE__ ) );
  * The core plugin class.
  */
 if ( is_admin() ) {
-	require_once BOB_PLUGIN_DIR . 'includes/bob_core.php';
+    require_once BOB_PLUGIN_DIR . 'includes/bob_core.php';
 }
 
 /**
@@ -40,27 +40,3 @@ function run_bob() {
     $bob->run();
 }
 run_bob();
-
-/**
- * Deletes all plugin data on deactivation.
- *
- * @since 1.0.0
- */
-function bob_deactivate() {
-    // Delete any options added by the plugin
-    delete_option( 'bob_openai_api_key' );
-    wp_clear_scheduled_hook( 'bob_seo_optimizer' );
-}
-register_deactivation_hook( __FILE__, 'bob_deactivate' );
-
-/**
- * Schedules the SEO optimization event on activation.
- *
- * @since 1.0.0
- */
-register_activation_hook( __FILE__, 'bob_schedule_seo_update' );
-
-function bob_schedule_seo_update() {
-    $optimizer = new Bob_SEO_Optimizer();
-    $optimizer->update_seo_data_daily();
-}

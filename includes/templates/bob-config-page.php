@@ -1,7 +1,7 @@
 <div class="wrap">
 	<h1><?php esc_html_e( 'Bob Settings', 'bob' ); ?></h1>
 
-	<form method="post" action="<?php echo esc_url( admin_url( 'options-general.php?page=bob-settings' ) ); ?>">
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=bob-settings' ) ); ?>">
 		<?php wp_nonce_field( 'bob-settings-group', 'bob-settings-nonce' ); ?>
 		<table class="form-table">
 			<tbody>

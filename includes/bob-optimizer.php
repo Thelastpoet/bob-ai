@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once BOB_PLUGIN_DIR . 'includes/bob-meta-checker.php';
 
 /**
- * Class for optimizing SEO data for posts.
+ * Class for optimizing SEO meta description for posts.
  *
  * @package Bob_SEO_Optimizer
  */
@@ -32,7 +32,7 @@ class Bob_SEO_Optimizer {
         $this->meta_checker = new Bob_Meta_Checker(); 
         
         add_action( 'bob_seo_optimizer', array( $this, 'update_seo_data_daily' ) );
-    }
+    }    
 
     public function update_seo_data_daily() {
         $args = array(
@@ -88,16 +88,11 @@ class Bob_SEO_Optimizer {
     
         wp_reset_postdata();
     
-        // Set the cron job to run again randomly between 1 and 3 hours.
-        $this->schedule_seo_update();
+        // Schedule the event to run again randomly between 1 and 3 hours later.
+        $next_scheduled_time = time() + rand( 3600, 10800 ); // Random delay between 1 and 3 hours
+        wp_schedule_single_event( $next_scheduled_time, 'bob_seo_optimizer' );
     }
 
-    public function schedule_seo_update() {
-		// Schedule the event to run between 1 and 3 hours later.
-		$next_scheduled_time = time() + rand( 3600, 10800 ); // Random delay between 1 and 3 hours
-		wp_schedule_single_event( $next_scheduled_time, 'bob_seo_optimizer' );
-	}
-    
     /**
      * Updates the modified time for the post if it has been more than three months since the post was last modified.
      */
@@ -121,42 +116,38 @@ class Bob_SEO_Optimizer {
     /**
      * Updates the SEO data for the post.
      */
-    /**
- * Updates the SEO data for the post.
- */
-public function update_seo_data( $post_id ) {
+    public function update_seo_data( $post_id ) {
         
-    // Get the post title and excerpt.
-    $post_title = get_the_title();
-    $post_excerpt = wp_trim_words( get_the_excerpt(), 25, '...' );
-    
-    // Check if SEO description is empty or not.
-    $seo_meta_key = $this->meta_checker->get_meta_key( $post_id );
-    $seo_description = get_post_meta( $post_id, $seo_meta_key, true );
-    if ( empty( $seo_description ) || strlen( $seo_description ) < 100 )  {
-        $seo_description = $post_excerpt;
-    }
+        // Get the post title and excerpt.
+        $post_title = get_the_title();
+        $post_excerpt = wp_trim_words( get_the_excerpt(), 25, '...' );
+        
+        // Check if SEO description is empty or not.
+        $seo_meta_key = $this->meta_checker->get_meta_key( $post_id );
+        $seo_description = get_post_meta( $post_id, $seo_meta_key, true );
+        if ( empty( $seo_description ) || strlen( $seo_description ) < 100 )  {
+            $seo_description = $post_excerpt;
+        }
 
-    // Generate a new SEO description.
-    $prompt = add_query_arg(
-        array(
-            'title' => $post_title,
-            'excerpt' => $post_excerpt,
-            'max_length' => $this->meta_max_length,
-        ),
-        esc_html__( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
-    );
+        // Generate a new SEO description.
+        $prompt = add_query_arg(
+            array(
+                'title' => $post_title,
+                'excerpt' => $post_excerpt,
+                'max_length' => $this->meta_max_length,
+            ),
+            esc_html__( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
+        );
 
-    $api_key = get_option( 'bob-openai-api-key' );
-    if ( $api_key ) {
-        $openai = new Bob_OpenAI();
-        $new_seo_description = $openai->generate_description( $prompt, $api_key );
+        $api_key = get_option( 'bob-openai-api-key' );
+        if ( $api_key ) {
+            $openai = new Bob_OpenAI();
+            $new_seo_description = $openai->generate_description( $prompt, $api_key );
 
-        // Update the SEO description if it is different from the original.
-        if ( $new_seo_description !== $seo_description ) {
-            update_post_meta( $post_id, $seo_meta_key, $new_seo_description );
+            // Update the SEO description if it is different from the original.
+            if ( $new_seo_description !== $seo_description ) {
+                update_post_meta( $post_id, $seo_meta_key, $new_seo_description );
+            }
         }
     }
-}
-
 }    

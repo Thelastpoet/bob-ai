@@ -9,10 +9,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 class Bob_Settings {
+	private $openai;
+
+    private $seo_optimizer;
 	
 	public function __construct() {		
+		require_once BOB_PLUGIN_DIR . 'includes/bob-openai.php';
+        require_once BOB_PLUGIN_DIR . 'includes/bob-optimizer.php';
+
+        $this->openai = new Bob_OpenAI();
+        $this->seo_optimizer = new Bob_SEO_Optimizer();
+
 		add_action( 'admin_menu', [ $this, 'bob_add_settings_page' ] );
 		add_action( 'admin_init', [ $this, 'bob_register_settings' ] );
+		add_action( 'admin_notices', array( $this, 'show_settings_notice' ) );
+        add_action( 'admin_init', array( $this, 'clear_settings_notice' ) );
 	}
 
 	/**
@@ -87,7 +98,10 @@ class Bob_Settings {
 	 */
 	public function render_openai_api_key_field() {
 		$api_key = get_option( 'bob-openai-api-key' );
-		echo sprintf( '<input type="text" name="bob-openai-api-key" value="%s" />', esc_attr( $api_key ) );
+		$description = __( 'Enter your OpenAI API key. You can get one by creating an account at <a href="https://openai.com">openai.com</a>.', 'bob' );
+		$tooltip = __( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob' );
+	
+		printf( '<input type="text" name="bob-openai-api-key" value="%s" title="%s" /><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), $description );
 	}
 
 	/**
@@ -135,7 +149,10 @@ class Bob_Settings {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}	
-		
+
+		// Check if settings have been saved
+		$settings_saved = get_option( 'bob_settings_saved' );
+
 		if (isset($_POST['submit'])) {
 			check_admin_referer('bob-settings-group', 'bob-settings-nonce');
 
@@ -149,6 +166,9 @@ class Bob_Settings {
 			// Save SEO settings
 			$seo_plugin = isset($_POST['bob_seo_optimizer_seo_plugin']) ? sanitize_text_field($_POST['bob_seo_optimizer_seo_plugin']) : '';
 			update_option('bob_seo_optimizer_seo_plugin', $seo_plugin);
+
+			// Schedule the SEO update
+			$this->seo_optimizer->update_seo_data_daily();
 
 			// Display a success message
 			add_settings_error('bob-settings-group', 'bob-settings-saved', __('Settings saved.', 'bob'), 'updated');
@@ -165,8 +185,29 @@ class Bob_Settings {
 
 		// Load the template file
 		ob_start();
-		include BOB_PLUGIN_DIR . 'templates/bob-config-page.php';
+		include BOB_PLUGIN_DIR . 'includes/templates/bob-config-page.php';
 		echo ob_get_clean();
 	}
+
+    /**
+     * Shows a notice if the settings have not been saved.
+     */
+    public function show_settings_notice() {
+        if ( ! $this->settings_saved && ! get_transient( 'bob_seo_notice_dismissed' ) ) {
+            echo '<div class="notice notice-warning is-dismissible"><p>';
+            printf( __( 'Please set your OpenAI API key and <a href="%s">save settings</a> to enable automatic Meta Description optimization.', 'bob-seo-optimizer' ), esc_url( admin_url( 'admin.php?page=bob-settings' ) ) );
+            echo '&nbsp;<a href="' . esc_url( add_query_arg( 'bob_seo_notice_dismissed', '1' ) ) . '">' . __( 'Dismiss', 'bob-seo-optimizer' ) . '</a>';
+            echo '</p></div>';
+        }
+    }
+
+    /**
+     * Clears the notice when the settings page is loaded.
+     */
+    public function clear_settings_notice() {
+        if ( isset( $_GET['page'] ) && $_GET['page'] === 'bob-settings' && isset( $_GET['bob_seo_notice_dismissed'] ) && $_GET['bob_seo_notice_dismissed'] === '1' ) {
+            set_transient( 'bob_seo_notice_dismissed', true );
+        }
+    }
 
 }
