@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Bob_Meta_Checker {
 
 	/**
-	 * Returns the active SEO plugin's meta key for a post.
+	 * Returns the active SEO plugin's metaa key for a post.
 	 *
 	 * @param int $post_id The ID of the post to get the meta key for.
 	 * @return string The meta key.

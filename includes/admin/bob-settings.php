@@ -21,9 +21,7 @@ class Bob_Settings {
         $this->seo_optimizer = new Bob_SEO_Optimizer();
 
 		add_action( 'admin_menu', [ $this, 'bob_add_settings_page' ] );
-		add_action( 'admin_init', [ $this, 'bob_register_settings' ] );
-		add_action( 'admin_notices', array( $this, 'show_settings_notice' ) );
-        add_action( 'admin_init', array( $this, 'clear_settings_notice' ) );
+		add_action( 'admin_init', [ $this, 'bob_register_settings' ] );		
 	}
 
 	/**
@@ -60,6 +58,8 @@ class Bob_Settings {
 	 * Registers the OpenAI API and SEO settings fields and sections.
 	 */
 	public function bob_register_settings() {
+		add_action( 'admin_notices', [ $this, 'bob_settings_saved_notice' ] );
+
 		// Register OpenAI API settings.
 		register_setting( 'bob-settings-group', 'bob-openai-api-key', [ $this, 'sanitize_text_field_callback' ] );
 		register_setting( 'bob-settings-group', 'bob-openai-model', [ $this, 'sanitize_text_field_callback' ] );
@@ -98,9 +98,9 @@ class Bob_Settings {
 	 */
 	public function render_openai_api_key_field() {
 		$api_key = get_option( 'bob-openai-api-key' );
-		$description = __( 'Enter your OpenAI API key. You can get one by creating an account at <a href="https://openai.com">openai.com</a>.', 'bob' );
-		$tooltip = __( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob' );
-	
+		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob' ), '<a href="https://openai.com">openai.com</a>' );
+		$tooltip = esc_attr__( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob' );
+
 		printf( '<input type="text" name="bob-openai-api-key" value="%s" title="%s" /><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), $description );
 	}
 
@@ -116,7 +116,7 @@ class Bob_Settings {
      * Renders the SEO settings section.
      */
     public function render_seo_settings_section() {
-        echo 'Configure your SEO settings below:';
+        echo esc_html__( 'Configure your SEO settings below:' );
     }
 
     /**
@@ -137,10 +137,35 @@ class Bob_Settings {
         if ( in_array( $value, $valid_options ) ) {
             return $value;
         } else {
-            return '';
+            return false;
         }
     }
+	
+	/**
+	 * Renders the SEO plugin field.
+	 */
+	public function render_seo_plugin_field() {
+		$seo_plugin_options = self::get_seo_plugin_options();
+		$selected_seo_plugin = get_option('bob_seo_optimizer_seo_plugin', 'yoast_seo');
 
+		echo '<select name="bob_seo_optimizer_seo_plugin">';
+		foreach ($seo_plugin_options as $key => $value) {
+			$selected = ($key == $selected_seo_plugin) ? 'selected' : '';
+			echo '<option value="' . esc_attr($key) . '" ' . $selected . '>' . esc_html($value) . '</option>';
+		}
+		echo '</select>';
+	}
+
+	public function bob_settings_saved_notice() {
+		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
+			?>
+			<div class="notice notice-success is-dismissible">
+				<p><?php esc_html_e( 'Settings saved successfully.', 'bob' ); ?></p>
+			</div>
+			<?php
+		}
+	}
+	
 	/**
 	 * Renders the settings page.
 	 */
@@ -148,66 +173,20 @@ class Bob_Settings {
 		// Check user capability to access the page.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
-		}	
-
-		// Check if settings have been saved
-		$settings_saved = get_option( 'bob_settings_saved' );
-
-		if (isset($_POST['submit'])) {
-			check_admin_referer('bob-settings-group', 'bob-settings-nonce');
-
-			// Save OpenAI settings
-			$api_key = isset($_POST['bob-openai-api-key']) ? sanitize_text_field($_POST['bob-openai-api-key']) : '';
-			update_option('bob-openai-api-key', $api_key);
-
-			$model = isset($_POST['bob-openai-model']) ? sanitize_text_field($_POST['bob-openai-model']) : '';
-			update_option('bob-openai-model', $model);
-
-			// Save SEO settings
-			$seo_plugin = isset($_POST['bob_seo_optimizer_seo_plugin']) ? sanitize_text_field($_POST['bob_seo_optimizer_seo_plugin']) : '';
-			update_option('bob_seo_optimizer_seo_plugin', $seo_plugin);
-
-			// Schedule the SEO update
-			$this->seo_optimizer->update_seo_data_daily();
-
-			// Display a success message
-			add_settings_error('bob-settings-group', 'bob-settings-saved', __('Settings saved.', 'bob'), 'updated');
-
 		}
-
-		settings_errors('bob-settings-group');
-
-		// Set variables for the template
-		$seo_plugin_options = self::get_seo_plugin_options();
-		$selected_seo_plugin = get_option('bob_seo_optimizer_seo_plugin', 'yoast_seo');
-		$openai_api_key = get_option('bob-openai-api-key');
-		$openai_model = get_option('bob-openai-model');
-
-		// Load the template file
-		ob_start();
-		include BOB_PLUGIN_DIR . 'includes/templates/bob-config-page.php';
-		echo ob_get_clean();
+	
+		settings_errors( 'bob-settings-group' );
+		?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Bob Settings', 'bob' ); ?></h1>
+	
+			<form method="post" action="options.php">
+				<?php settings_fields( 'bob-settings-group' ); ?>
+				<?php do_settings_sections( 'bob-settings' ); ?>
+				<?php wp_nonce_field( 'bob-settings-group', 'bob-settings-nonce' ); ?>
+				<?php submit_button( __( 'Save Settings', 'bob' ), 'primary', 'submit', ); ?>
+			</form>
+		</div>
+		<?php
 	}
-
-    /**
-     * Shows a notice if the settings have not been saved.
-     */
-    public function show_settings_notice() {
-        if ( ! $this->settings_saved && ! get_transient( 'bob_seo_notice_dismissed' ) ) {
-            echo '<div class="notice notice-warning is-dismissible"><p>';
-            printf( __( 'Please set your OpenAI API key and <a href="%s">save settings</a> to enable automatic Meta Description optimization.', 'bob-seo-optimizer' ), esc_url( admin_url( 'admin.php?page=bob-settings' ) ) );
-            echo '&nbsp;<a href="' . esc_url( add_query_arg( 'bob_seo_notice_dismissed', '1' ) ) . '">' . __( 'Dismiss', 'bob-seo-optimizer' ) . '</a>';
-            echo '</p></div>';
-        }
-    }
-
-    /**
-     * Clears the notice when the settings page is loaded.
-     */
-    public function clear_settings_notice() {
-        if ( isset( $_GET['page'] ) && $_GET['page'] === 'bob-settings' && isset( $_GET['bob_seo_notice_dismissed'] ) && $_GET['bob_seo_notice_dismissed'] === '1' ) {
-            set_transient( 'bob_seo_notice_dismissed', true );
-        }
-    }
-
 }

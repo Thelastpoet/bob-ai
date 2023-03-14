@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once BOB_PLUGIN_DIR . 'includes/bob-meta-checker.php';
+require_once BOB_PLUGIN_DIR . 'includes/bob-openai.php';
 
 /**
  * Class for optimizing SEO meta description for posts.
@@ -12,7 +13,6 @@ require_once BOB_PLUGIN_DIR . 'includes/bob-meta-checker.php';
  * @package Bob_SEO_Optimizer
  */
 class Bob_SEO_Optimizer {
-
     private $posts_per_batch;
     private $previous_mod_date;
     private $post_type;
@@ -24,14 +24,21 @@ class Bob_SEO_Optimizer {
      * Initializes the class.
      */
     public function __construct() {
+        $this->initialize_properties();
+        $this->register_hooks();
+    }
+
+    private function initialize_properties() {
         $this->posts_per_batch = 1;
         $this->previous_mod_date = 0 * DAY_IN_SECONDS;
         $this->post_type = 'post';
         $this->order = 'ASC';
         $this->meta_max_length = 160;
-        $this->meta_checker = new Bob_Meta_Checker(); 
-        
-        add_action( 'bob_seo_optimizer', array( $this, 'update_seo_data_daily' ) );
+        $this->meta_checker = new Bob_Meta_Checker();
+    }
+    
+    private function register_hooks() {
+        add_action( 'bob_optimizer_cron', array( $this, 'update_seo_data_daily' ) );
     }    
 
     public function update_seo_data_daily() {
@@ -88,10 +95,15 @@ class Bob_SEO_Optimizer {
     
         wp_reset_postdata();
     
-        // Schedule the event to run again randomly between 1 and 3 hours later.
-        $next_scheduled_time = time() + rand( 3600, 10800 ); // Random delay between 1 and 3 hours
-        wp_schedule_single_event( $next_scheduled_time, 'bob_seo_optimizer' );
+        // Set the cron job to run again randomly between 1 and 3 hours.
+        $this->schedule_seo_update();
     }
+
+    public function schedule_seo_update() {
+		// Schedule the event to run between 1 and 3 hours later.
+		$next_scheduled_time = time() + rand( 3600, 10800 ); // Random delay between 1 and 3 hours
+		wp_schedule_single_event( $next_scheduled_time, 'bob_optimizer_cron' );
+	}
 
     /**
      * Updates the modified time for the post if it has been more than three months since the post was last modified.
@@ -125,7 +137,7 @@ class Bob_SEO_Optimizer {
         // Check if SEO description is empty or not.
         $seo_meta_key = $this->meta_checker->get_meta_key( $post_id );
         $seo_description = get_post_meta( $post_id, $seo_meta_key, true );
-        if ( empty( $seo_description ) || strlen( $seo_description ) < 100 )  {
+        if ( empty( $seo_description ) )  {
             $seo_description = $post_excerpt;
         }
 
@@ -136,7 +148,7 @@ class Bob_SEO_Optimizer {
                 'excerpt' => $post_excerpt,
                 'max_length' => $this->meta_max_length,
             ),
-            esc_html__( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
+            __( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
         );
 
         $api_key = get_option( 'bob-openai-api-key' );
