@@ -72,7 +72,7 @@ class Bob_Settings {
 		register_setting( 'bob-settings-group', 'bob_seo_optimizer_seo_plugin', [ $this, 'sanitize_seo_plugin' ] );
 	
 		add_settings_section( 'bob-seo-section', __( 'Bob SEO Settings', 'bob-seo-optimizer' ), [ $this, 'render_seo_settings_section' ], 'bob-settings' );
-		add_settings_field( 'bob_seo_optimizer_seo_plugin', __( 'Select your preferred SEO plugin:', 'bob-seo-optimizer' ), [ $this, 'render_seo_plugin_field' ], 'bob-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_seo_plugin', __( 'Select your current SEO plugin from the list:', 'bob-seo-optimizer' ), [ $this, 'render_seo_plugin_field' ], 'bob-settings', 'bob-seo-section' );
 	}
 
 	/**
