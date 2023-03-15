@@ -158,6 +158,11 @@ class Bob_Settings {
 
 	public function bob_settings_saved_notice() {
 		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
+			$timestamp = wp_next_scheduled( 'bob_optimizer_cron' );
+
+			if ( false === $timestamp ) {
+				$this->seo_optimizer->schedule_seo_update();
+			}
 			?>
 			<div class="notice notice-success is-dismissible">
 				<p><?php esc_html_e( 'Settings saved successfully.', 'bob' ); ?></p>
