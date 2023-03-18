@@ -21,8 +21,15 @@ class Bob_Settings {
         $this->seo_optimizer = new Bob_SEO_Optimizer();
 
 		add_action( 'admin_menu', [ $this, 'bob_add_settings_page' ] );
-		add_action( 'admin_init', [ $this, 'bob_register_settings' ] );		
+		add_action( 'admin_init', [ $this, 'bob_register_settings' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
+		
 	}
+
+	public function enqueue_admin_scripts() {
+		wp_enqueue_script( 'bob-admin-js', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array( 'jquery' ), BOB_VERSION, true );
+	}
+	
 
 	/**
 	 * Adds the settings pages to the WordPress admin menu.
@@ -100,8 +107,8 @@ class Bob_Settings {
 		$api_key = get_option( 'bob-openai-api-key' );
 		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob' ), '<a href="https://openai.com">openai.com</a>' );
 		$tooltip = esc_attr__( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob' );
-
-		printf( '<input type="text" name="bob-openai-api-key" value="%s" title="%s" /><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), $description );
+	
+		printf( '<input type="password" name="bob-openai-api-key" value="%s" title="%s" /><button id="bob-api-key-toggle" type="button">%s</button><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), esc_html__( 'Show', 'bob' ), $description );
 	}
 
 	/**
