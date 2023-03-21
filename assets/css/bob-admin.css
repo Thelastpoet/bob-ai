@@ -1,31 +1,3 @@
-/* Add your custom logo or header image */
-.bob-settings-wrap h1 {
-	margin-bottom: 30px;
-	background-repeat: no-repeat;
-	background-size: contain;
-	padding-left: 100px; 
-	height: 60px; 
-	line-height: 60px;
-}
-
-/* Organize settings using sections and whitespace */
-.bob-settings-wrap .settings-section {
-	margin-bottom: 40px;
-}
-
-.bob-settings-wrap .settings-section h2 {
-	margin-bottom: 20px;
-}
-
-.bob-settings-wrap .settings-section .form-table {
-	margin-bottom: 30px;
-}
-
-.bob-settings-wrap .settings-section .form-table th,
-.bob-settings-wrap .settings-section .form-table td {
-	padding: 15px;
-}
-
 /* Style tooltips and other elements */
 .bob-tooltip-container {
 	position: relative;
@@ -49,5 +21,3 @@
 .bob-tooltip-container:hover .bob-tooltip {
 	display: block;
 }
-
-

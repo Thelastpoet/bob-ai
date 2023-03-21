@@ -4,8 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class for detecting active SEO plugin and checking for meta description.
- *
  * @package Bob_SEO_Optimizer
  */
 class Bob_Meta_Checker {
@@ -17,8 +15,6 @@ class Bob_Meta_Checker {
 	 * @return string The meta key.
 	 */
 	public static function get_meta_key( $post_id ) {
-
-		// Get the selected SEO plugin option from the admin dashboard.
 		$seo_plugin_option = get_option( 'bob_seo_optimizer_seo_plugin', 'yoast_seo' );
 
 		// Map the selected SEO plugin option to the corresponding meta key.

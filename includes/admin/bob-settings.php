@@ -22,15 +22,13 @@ class Bob_Settings {
 
 		add_action( 'admin_menu', [ $this, 'bob_add_settings_page' ] );
 		add_action( 'admin_init', [ $this, 'bob_register_settings' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
-		
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );		
 	}
 
 	public function enqueue_admin_scripts() {
 		wp_enqueue_script( 'bob-admin-js', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array( 'jquery' ), BOB_VERSION, true );
 		wp_enqueue_style( 'bob-admin-css', BOB_PLUGIN_URL . 'assets/css/bob-admin.css', array(), BOB_VERSION );
 	}
-
 
 	/**
 	 * Adds the settings pages to the WordPress admin menu.
@@ -46,7 +44,7 @@ class Bob_Settings {
 	}
 
 	/**
-     * Returns an array of available SEO plugins.
+     * vailable SEO plugins.
      *
      * @return array Available SEO plugins.
      */

@@ -51,7 +51,7 @@ class Bob_SEO_Optimizer {
     
         $query = new WP_Query( $args );
     
-        $posts_skipped = 0; // Define the $posts_skipped variable.
+        $posts_skipped = 0;
     
         while ( $query->have_posts() ) {
             $query->the_post();
@@ -106,7 +106,7 @@ class Bob_SEO_Optimizer {
 	}
 
     /**
-     * Updates the modified time for the post if it has been more than three months since the post was last modified.
+     * Updates the modified time for the post.
      */
     public function update_post_modified_time( $post_id ) {
         $last_modified_time = get_post_modified_time( 'U', true, $post_id );
@@ -126,7 +126,7 @@ class Bob_SEO_Optimizer {
     }    
 
     /**
-     * Updates the SEO data for the post.
+     * Updates Meta data for the post.
      */
     public function update_seo_data( $post_id ) {
         
@@ -134,14 +134,14 @@ class Bob_SEO_Optimizer {
         $post_title = get_the_title();
         $post_excerpt = wp_trim_words( get_the_excerpt(), 25, '...' );
         
-        // Check if SEO description is empty or not.
+        // Check if Meta description is empty or not.
         $seo_meta_key = $this->meta_checker->get_meta_key( $post_id );
         $seo_description = get_post_meta( $post_id, $seo_meta_key, true );
         if ( empty( $seo_description ) )  {
             $seo_description = $post_excerpt;
         }
 
-        // Generate a new SEO description.
+        // Generate a new Meta description.
         $prompt = add_query_arg(
             array(
                 'title' => $post_title,
@@ -156,7 +156,7 @@ class Bob_SEO_Optimizer {
             $openai = new Bob_OpenAI();
             $new_seo_description = $openai->generate_description( $prompt, $api_key );
 
-            // Update the SEO description if it is different from the original.
+            // Update the Meta description if it is different from the original.
             if ( $new_seo_description !== $seo_description ) {
                 update_post_meta( $post_id, $seo_meta_key, $new_seo_description );
             }

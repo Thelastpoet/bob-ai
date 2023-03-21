@@ -25,15 +25,13 @@ class Bob_OpenAI {
     }
 
     /**
-     * Sends a request to the OpenAI API and returns the generated text.
-     *
      * @param string $prompt The prompt for the API request.
      * @param array  $args   Optional arguments for the API request.
      *
      * @return string|WP_Error The generated text or a WP_Error object on failure.
      */
     public function generate_description( $prompt, $args = array() ) {
-        // Set default arguments.
+        
         $defaults = array(
             'max_tokens' => 256,
             'model' => 'text-davinci-003',
@@ -65,7 +63,6 @@ class Bob_OpenAI {
             'presence_penalty' => $presence_penalty,
         );
 
-        // Send the request using the HTTP API.
         $response = wp_safe_remote_post( $this->api_endpoint, array_merge( $this->http_args, array( 'body' => wp_json_encode( $request_body ) ) ) );
 
         if ( is_wp_error( $response ) ) {
