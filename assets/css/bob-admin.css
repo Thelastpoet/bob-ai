@@ -1,36 +1,53 @@
-.bob-tooltip-container {
-    position: relative;
-    display: inline-block;
+/* Add your custom logo or header image */
+.bob-settings-wrap h1 {
+	margin-bottom: 30px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	padding-left: 100px; 
+	height: 60px; 
+	line-height: 60px;
 }
 
-.bob-tooltip-container:hover .bob-tooltip {
-    visibility: visible;
-    opacity: 1;
+/* Organize settings using sections and whitespace */
+.bob-settings-wrap .settings-section {
+	margin-bottom: 40px;
+}
+
+.bob-settings-wrap .settings-section h2 {
+	margin-bottom: 20px;
+}
+
+.bob-settings-wrap .settings-section .form-table {
+	margin-bottom: 30px;
+}
+
+.bob-settings-wrap .settings-section .form-table th,
+.bob-settings-wrap .settings-section .form-table td {
+	padding: 15px;
+}
+
+/* Style tooltips and other elements */
+.bob-tooltip-container {
+	position: relative;
+	display: inline-block;
 }
 
 .bob-tooltip {
-    visibility: hidden;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-    opacity: 0;
-    transition: opacity 0.3s;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 100%;
+	background-color: #333;
+	color: #fff;
+	padding: 5px;
+	border-radius: 3px;
+	margin-left: 5px;
+	white-space: nowrap;
+	font-size: 12px;
 }
 
-.bob-tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
+.bob-tooltip-container:hover .bob-tooltip {
+	display: block;
 }
+
+

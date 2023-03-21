@@ -116,8 +116,26 @@ class Bob_Settings {
 	 * Renders the model field.
 	 */
 	public function render_openai_model_field() {
-		$model = get_option( 'bob-openai-model' );
-		echo sprintf( '<input type="text" name="bob-openai-model" value="%s" />', esc_attr( $model ) );
+		$models = array(
+			'text-davinci-003' => 'Davinci 003',
+			'text-davinci-002' => 'Davinci 002',
+			'text-curie-001' => 'Curie 001',
+			'text-babbage-001' => 'Babbage 001',
+			'text-ada-001' => 'Ada 001',
+			'davinci' => 'Davinci',
+			'curie' => 'Curie',
+			'babbage' => 'Babbage',
+			'ada' => 'Ada',
+		);
+
+		$selected_model = get_option('bob-openai-model', 'text-davinci-003');
+
+		echo '<select name="bob-openai-model">';
+		foreach ($models as $key => $value) {
+			$selected = ($key == $selected_model) ? 'selected' : '';
+			echo '<option value="' . esc_attr($key) . '" ' . $selected . '>' . esc_html($value) . '</option>';
+		}
+		echo '</select>';
 	}
 
 	/**
@@ -190,7 +208,7 @@ class Bob_Settings {
 	
 		settings_errors( 'bob-settings-group' );
 		?>
-		<div class="wrap">
+		<div class="wrap bob-settings-wrap">
 			<h1><?php esc_html_e( 'Bob Settings', 'bob' ); ?></h1>
 	
 			<form method="post" action="options.php">

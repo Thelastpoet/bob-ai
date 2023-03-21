@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const apiKeyInput = document.querySelector('[name="openai_api_key"]');
+function initBobAdmin() {
+    const apiKeyInput = document.querySelector('[name="bob-openai-api-key"]');
     const apiKeyToggle = document.querySelector('#bob-api-key-toggle');
 
     if (apiKeyInput && apiKeyToggle) {
@@ -15,4 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBobAdmin);
+} else {
+    initBobAdmin();
+}

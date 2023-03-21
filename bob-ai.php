@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Bob
+ * Plugin Name: Bob AI
  * Description: A WordPress plugin that optimizes and updates meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.
  * Version: 1.0.0
  * Author: Ammanulah Emmanuel
