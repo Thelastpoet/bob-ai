@@ -149,7 +149,7 @@ class Bob_SEO_Optimizer {
         
         // Get the post title and excerpt.
         $post_title = get_the_title();
-        $post_excerpt = wp_trim_words( get_the_excerpt(), 25, '...' );
+        $post_excerpt = wp_trim_words( get_the_excerpt(), 100, '...' );
         
         // Check if Meta description is empty or not.
         $seo_meta_key = $this->meta_checker->get_meta_key( $post_id );
@@ -159,13 +159,11 @@ class Bob_SEO_Optimizer {
         }
 
         // Generate a new Meta description.
-        $prompt = add_query_arg(
-            array(
-                'title' => $post_title,
-                'excerpt' => $post_excerpt,
-                'max_length' => $this->meta_max_length,
-            ),
-            __( 'Write an SEO optimized meta description for the following article:', 'bob-seo-optimizer' )
+        $prompt = sprintf(
+            "Create an SEO-optimized meta description of up to %d characters for the following article:\n\nTitle: %s\nExcerpt: %s\n\nConsider using relevant keywords and phrases to improve search engine rankings.",
+            $this->meta_max_length,
+            $post_title,
+            $post_excerpt
         );
 
         $api_key = get_option( 'bob-openai-api-key' );
