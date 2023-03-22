@@ -105,15 +105,23 @@ class Bob_Stats {
     
             echo '<div class="tablenav bottom">';
             echo '<div class="tablenav-pages">';
-            echo paginate_links(array(
-                'base' => $pagenum_link,
+
+            echo '<p>Total Updated Posts: ' . esc_html(number_format_i18n($total_items)) . '</p>';
+
+            $pagination_args = array(
+                'base' => add_query_arg('paged', '%#%'),
                 'format' => '',
                 'total' => ceil($total_items / $per_page),
-                'current' => $pagenum,
+                'current' => max(1, $current_page),
+                'show_all' => false,
+                'prev_next' => true,
                 'prev_text' => __('&laquo; Previous'),
                 'next_text' => __('Next &raquo;'),
-                'type' => 'list',
-            ));
+                'type' => 'plain',
+            );
+
+            echo paginate_links($pagination_args);
+            
             echo '</div>';
             echo '</div>';
             ?> 
