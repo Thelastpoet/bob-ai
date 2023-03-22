@@ -17,6 +17,7 @@ class Bob_OpenAI {
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->api_key,
             ),
+            'timeout' => 10,
         );
     }
 
