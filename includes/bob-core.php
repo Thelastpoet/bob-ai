@@ -1,21 +1,18 @@
 <?php
+defined('ABSPATH') or die('No script kiddies please!');
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+require_once BOB_PLUGIN_DIR . 'includes/admin/bob-settings.php';
+require_once BOB_PLUGIN_DIR . 'stats/bob-stats.php';
 
-/**
- * Represents the core functionality of the Bob plugin.
- */
 class Bob_Core {
     private static $instance;
 
     private $settings;
+    private $bob_stats;
     
     public function __construct() {
-        require_once BOB_PLUGIN_DIR . 'includes/admin/bob-settings.php';
-
         $this->settings = new Bob_Settings();
+        $this->bob_stats = new Bob_Stats();
     }
 
     public static function get_instance() {
@@ -28,10 +25,11 @@ class Bob_Core {
     public function run() {
         register_activation_hook( __FILE__, array( $this, 'bob_activate' ) );
         register_deactivation_hook( __FILE__, array( $this, 'bob_deactivate' ) );
+        $this->bob_stats->bob_stats_table();
     }
 
     public function bob_activate() {
-        // to implement	
+        // to implement later
     }
 
     public function bob_deactivate() {

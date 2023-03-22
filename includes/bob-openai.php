@@ -1,8 +1,7 @@
 <?php
 
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+    exit; // Exit if accessed directly
 }
 
 class Bob_OpenAI {
@@ -10,9 +9,6 @@ class Bob_OpenAI {
     private $api_key;
     private $http_args;
 
-    /**
-     * Initializes the OpenAI class and sets the API key and HTTP request arguments.
-     */
     public function __construct() {
         $this->api_key = get_option( 'bob-openai-api-key' );
 
@@ -33,7 +29,7 @@ class Bob_OpenAI {
     public function generate_description( $prompt, $args = array() ) {
         
         $defaults = array(
-            'max_tokens' => 256,
+            'max_tokens' => 40,
             'model' => 'text-davinci-003',
             'temperature' => 0.7,
             'top_p' => 1,
@@ -41,7 +37,6 @@ class Bob_OpenAI {
             'presence_penalty' => 0,
         );
 
-        // Merge arguments with defaults.
         $args = wp_parse_args( $args, $defaults );
 
         // Sanitize and validate arguments.
@@ -52,7 +47,6 @@ class Bob_OpenAI {
         $frequency_penalty = floatval( $args['frequency_penalty'] );
         $presence_penalty = floatval( $args['presence_penalty'] );
 
-        // Prepare the request body.
         $request_body = array(
             'prompt' => $prompt,
             'max_tokens' => $max_tokens,

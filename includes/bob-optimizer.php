@@ -105,6 +105,23 @@ class Bob_SEO_Optimizer {
 		wp_schedule_single_event( $next_scheduled_time, 'bob_optimizer_cron' );
 	}
 
+    public function save_stats($post_id, $meta_description) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'bob_ai_stats';
+        $word_count = str_word_count($meta_description);
+
+        $wpdb->insert(
+            $table_name,
+            [
+                'post_id' => $post_id,
+                'meta_description' => $meta_description,
+                'word_count' => $word_count,
+                'updated_at' => current_time('mysql')
+            ],
+            ['%d', '%s', '%d', '%s']
+        );
+    }
+
     /**
      * Updates the modified time for the post.
      */
@@ -159,6 +176,7 @@ class Bob_SEO_Optimizer {
             // Update the Meta description if it is different from the original.
             if ( $new_seo_description !== $seo_description ) {
                 update_post_meta( $post_id, $seo_meta_key, $new_seo_description );
+                $this->save_stats($post_id, $new_seo_description);
             }
         }
     }

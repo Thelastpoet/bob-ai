@@ -15,7 +15,7 @@
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+    die;
 }
 
 // Define bob constants.
@@ -26,7 +26,7 @@ define( 'BOB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 /**
  * The core plugin class.
  */
-require_once BOB_PLUGIN_DIR . 'includes/bob_core.php';
+require_once BOB_PLUGIN_DIR . 'includes/bob-core.php';
 
 /**
  * Begins execution of the plugin.

@@ -10,14 +10,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Bob_Settings {
 	private $openai;
-
     private $seo_optimizer;
+	private $bob_stats;
 	
-	public function __construct() {		
+	public function __construct() {	
+		require_once BOB_PLUGIN_DIR . 'stats/bob-stats.php';	
 		require_once BOB_PLUGIN_DIR . 'includes/bob-openai.php';
         require_once BOB_PLUGIN_DIR . 'includes/bob-optimizer.php';
-
+		
         $this->openai = new Bob_OpenAI();
+		$this->bob_stats = new Bob_Stats();
         $this->seo_optimizer = new Bob_SEO_Optimizer();
 
 		add_action( 'admin_menu', [ $this, 'bob_add_settings_page' ] );
@@ -28,6 +30,8 @@ class Bob_Settings {
 	public function enqueue_admin_scripts() {
 		wp_enqueue_script( 'bob-admin-js', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array( 'jquery' ), BOB_VERSION, true );
 		wp_enqueue_style( 'bob-admin-css', BOB_PLUGIN_URL . 'assets/css/bob-admin.css', array(), BOB_VERSION );
+		wp_enqueue_script('chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', array(), '4.2.1', true);
+		wp_add_inline_script('chartjs', 'window.Chart = typeof window.Chart === "undefined" ? {} : window.Chart;');
 	}
 
 	/**
@@ -40,6 +44,15 @@ class Bob_Settings {
 			'manage_options',
 			'bob-settings',
 			[ $this, 'bob_render_settings_page' ]
+		);
+
+		add_submenu_page(
+			'bob-settings',
+			__('Bob Stats', 'bob'),
+			__('Bob Stats', 'bob'),
+			'manage_options',
+			'bob-stats',
+			[$this->bob_stats, 'bob_render_stats_page']
 		);
 	}
 
@@ -96,7 +109,7 @@ class Bob_Settings {
 	 * Renders the OpenAI section.
 	 */
 	public function render_openai_section() {
-		echo esc_html__( 'Enter your OpenAI API Key and other settings below.', 'bob' );
+		echo esc_html__( 'Enter your OpenAI API Key and choose a Model to get started.', 'bob' );
 	}
 
 	/**
