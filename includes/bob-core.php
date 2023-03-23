@@ -39,7 +39,7 @@ class Bob_Core {
 
     public function bob_uninstall() {
         delete_option('bob-openai-api-key');
-        delete_option('bob_openai_model');
+        delete_option('bob-openai-model');
         delete_option('bob_seo_optimizer_seo_plugin');
         wp_clear_scheduled_hook('bob_optimizer_cron');
         $this->bob_stats->delete_bob_stats_table();
