@@ -4,7 +4,7 @@ Tags: SEO, AI, OpenAI, meta descriptions, descriptions, GPT, GPT3.5
 Requires at least: 5.3 or higher
 Tested up to: 6.1.1
 Stable tag: 1.0.0
-Requires PHP: 7.2 or higher
+Requires PHP: 7.0 or higher
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
