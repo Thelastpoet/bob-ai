@@ -178,5 +178,14 @@ class Bob_Stats {
         </div>
         <?php
     }
+
+    // delete table  when uninstalled
+    public function delete_bob_stats_table() {
+        global $wpdb;
+    
+        $table_name = $wpdb->prefix . 'bob_ai_stats';
+        $sql = "DROP TABLE IF EXISTS {$table_name};";
+        $wpdb->query($sql);
+    } 
     
 }

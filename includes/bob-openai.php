@@ -30,7 +30,7 @@ class Bob_OpenAI {
     public function generate_description( $prompt, $args = array() ) {
         
         $defaults = array(
-            'max_tokens' => 50,
+            'max_tokens' => 40,
             'model' => 'text-davinci-003',
             'temperature' => 0.7,
             'top_p' => 1,
