@@ -23,12 +23,12 @@ Bob AI is a WordPress plugin that uses OpenAI to optimize and update meta descri
 
 *KEY FEATURES*
 
-Bob Ai uses your own content to generate unique Meta Description for your blog posts. We utilize the powerful and latest OpenAI Models to aide in the development of the meta descrions.
+Bob AI uses your own content to generate unique meta descriptions for your blog posts. We utilize the powerful and latest OpenAI models to aid in the development of the meta descriptions.
 
-* Auto AI-generated meta descriptions from your titles and content*
+* Auto AI-generated meta descriptions from your titles and content
 * Integration with popular SEO plugins
 * Easy-to-use interface
-* One time setup
+* One-time setup
 
 == Frequently Asked Questions ==
 
@@ -38,7 +38,7 @@ Bob AI is an innovative solution that leverages the power of artificial intellig
 
 = How does Bob AI work? =
 
-Bob AI uses OpenAI's powerful language models to analyze your website content and generate compelling meta descriptions that are tailored to each page. When you create or update a page or post on your website, Bob AI uses your own content including the title, focus keyword, and content to generate a unique meta description for that page. This ensures that the content is 100% owned by you, the website owner.
+Bob AI uses OpenAI's powerful language models to analyze your website content and generate compelling meta descriptions that are tailored to each page. When you create or update a page or post on your website, Bob AI uses your own content, including the title, focus keyword, and content, to generate a unique meta description for that page. This ensures that the content is 100% owned by you, the website owner.
 
 = Is Bob AI easy to use? =
 
@@ -47,9 +47,9 @@ Yes, Bob AI is designed to be user-friendly and intuitive. You can install the p
 == Installation ==
 
 * Obtain an OpenAI API key from the OpenAI website. You will need this key to use the Bob AI plugin.
-* Upload the plugin files to the /wp-content/plugins/bob-ai directory, or install the plugin through the WordPress plugins screen directly.
-* Activate the plugin through the 'Plugins' screen in WordPress
-* Use the Bob AI screen to configure the plugin with your OpenAI API key, Model and select the current installed SEO Plugin.
+* Upload the plugin files to the /wp-content/plugins/ directory, or install the plugin through the WordPress plugins screen directly.
+* Activate the plugin through the 'Plugins' screen in WordPress.
+* Use the Bob AI screen to configure the plugin with your OpenAI API key, Model, and select the currently installed SEO Plugin.
 
 To obtain an OpenAI API key, visit the OpenAI website and sign up for an account. Once you've created an account, you can access your API key from the dashboard.
 
