@@ -1,3 +1,4 @@
+/* Bob Settings Layout Styles */
 .bob-tooltip-container {
 	position: relative;
 	display: inline-block;
@@ -93,4 +94,27 @@
     display: inline-block;
     max-width: 600px; 
     word-break: break-word;
+}
+/* Bob Start / Stop Buttons */
+.bob-message {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.bob-message-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.bob-message-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+/* Documentation Tab */
+.help-section p {
+    font-size: 15px;
+    line-height: 1.6;
 }

@@ -132,13 +132,14 @@ class Bob_Settings {
 	public function render_openai_section() {
 		echo esc_html__( 'Enter your OpenAI API Key and choose a Model to get started.', 'bob' );
 	}
+
 	public function render_openai_api_key_field() {
 		$api_key = get_option( 'bob-openai-api-key' );
-		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob' ), '<a href="https://openai.com">openai.com</a>' );
+		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob' ), '<a href="https://beta.openai.com/signup/" target="_blank">openai.com</a>' );
 		$tooltip = esc_attr__( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob' );
 	
 		printf( '<div class="bob-tooltip-container"><input type="password" name="bob-openai-api-key" value="%s" autocomplete="off" /><span class="bob-tooltip">%s</span><button id="bob-api-key-toggle" type="button">%s</button></div><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), esc_html__( 'Show', 'bob' ), $description );
-	}	
+	}
 
 	public function render_openai_model_field() {
 		$models = array(
@@ -151,7 +152,6 @@ class Bob_Settings {
 	
 		$selected_model = get_option('bob-openai-model', 'text-davinci-003');
 	
-		echo '<label for="bob-openai-model">OpenAI Model:</label>';
 		echo '<select name="bob-openai-model" id="bob-openai-model">';
 		foreach ($models as $key => $value) {
 			$selected = ($key == $selected_model) ? 'selected' : '';
@@ -213,7 +213,6 @@ class Bob_Settings {
 		$seo_plugin_options = self::get_seo_plugin_options();
 		$selected_seo_plugin = get_option('bob_seo_optimizer_seo_plugin', 'yoast_seo');
 
-		echo '<label for="bob-seo-optimizer-seo-plugin">SEO Plugin:</label>';
 		echo '<select name="bob_seo_optimizer_seo_plugin" id="bob-seo-optimizer-seo-plugin">';
 		foreach ($seo_plugin_options as $key => $value) {
 			$selected = ($key == $selected_seo_plugin) ? 'selected' : '';
@@ -244,7 +243,6 @@ class Bob_Settings {
 		$post_types = get_post_types( [ 'public' => true ], 'objects' );
 		$excluded_types = [ 'attachment', 'customize_changeset', 'custom_css', 'oembed_cache' ];
 	
-		echo '<label for="bob-seo-optimizer-post-type">Post Type:</label>';
 		echo '<select name="bob_seo_optimizer_post_type" id="bob-seo-optimizer-post-type">';
 		foreach ( $post_types as $key => $value ) {
 			if ( in_array( $key, $excluded_types ) ) {
@@ -263,7 +261,6 @@ class Bob_Settings {
 			'desc' => __( 'Newest first', 'bob' ),
 		];
 	
-		echo '<label for="bob-seo-optimizer-order">Order:</label>';
 		echo '<select name="bob_seo_optimizer_order" id="bob-seo-optimizer-order">';
 		foreach ( $order_options as $key => $value ) {
 			$selected = ( $key == $order ) ? 'selected' : '';
