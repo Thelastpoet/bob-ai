@@ -29,13 +29,13 @@ class Bob_SEO_Optimizer {
     }
 
     private function initialize_properties() {
-        $this->posts_per_batch = 1;
-        $this->previous_mod_date = 0 * DAY_IN_SECONDS;
-        $this->post_type = 'post';
-        $this->order = 'ASC';
-        $this->meta_max_length = 160;
+        $this->posts_per_batch = get_option( 'bob-posts-per-batch', 1 );
+        $this->previous_mod_date = get_option( 'bob-previous-mod-date', 0 ) * DAY_IN_SECONDS;
+        $this->post_type = get_option( 'bob-post-type', 'post' );
+        $this->order = get_option( 'bob-order', 'ASC' );
+        $this->meta_max_length = get_option( 'bob-meta-max-length', 160 );
         $this->meta_checker = new Bob_Meta_Checker();
-    }
+    }    
     
     private function register_hooks() {
         add_action( 'bob_optimizer_cron', array( $this, 'update_seo_data_daily' ) );
@@ -106,6 +106,10 @@ class Bob_SEO_Optimizer {
 	}
 
     public function save_stats($post_id, $meta_description) {
+        if (!is_string($meta_description)) {
+            return;
+        }
+
         global $wpdb;
         $table_name = $wpdb->prefix . 'bob_ai_stats';
         $word_count = str_word_count($meta_description);
@@ -168,8 +172,8 @@ class Bob_SEO_Optimizer {
 
         $api_key = get_option( 'bob-openai-api-key' );
         if ( $api_key ) {
-            $openai = new Bob_OpenAI();
-            $new_seo_description = $openai->generate_description( $prompt, $api_key );
+            $openai = new OpenAIGenerator();
+            $new_seo_description = $openai->generate_description($prompt);
 
             // Update the Meta description if it is different from the original.
             if ( $new_seo_description !== $seo_description ) {

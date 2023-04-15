@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define bob constants.
-define( 'BOB_VERSION', '1.0.0' );
+define( 'BOB_VERSION', '1.1.0' );
 define( 'BOB_PLUGIN_FILE', __FILE__ );
 define( 'BOB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BOB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -27,7 +27,7 @@ define( 'BOB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 /**
  * The core plugin class.
  */
-require_once BOB_PLUGIN_DIR . 'includes/bob-core.php';
+require_once BOB_PLUGIN_DIR . 'bob-core.php';
 
 /**
  * Begins execution of the plugin.
@@ -35,7 +35,7 @@ require_once BOB_PLUGIN_DIR . 'includes/bob-core.php';
  * @since 1.1.0
  */
 function run_bob() {
-    $bob = Bob_Core::get_instance(BOB_PLUGIN_FILE);
+    $bob = Bob_Core::get_instance( BOB_PLUGIN_FILE );
     $bob->run();
 }
 

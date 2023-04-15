@@ -30,6 +30,15 @@ Bob AI uses your own content to generate unique meta descriptions for your blog 
 * Easy-to-use interface
 * One-time setup
 
+== OPENAI ==
+
+This plugin utilizes the API from [OpenAI](https://platform.openai.com/), which is a 3rd party or external service. The data transmitted to the OpenAI servers primarily consists of the content of your article and the context you specify. By using this plugin, you agree to the OpenAI terms of use and privacy policies, which can be found at the following links:
+
+* OpenAI Terms of Use: https://openai.com/policies/terms-of-use
+* OpenAI Privacy Policy: https://openai.com/policies/privacy-policy
+
+Please note that the use of this external service is necessary for the proper functioning of the plugin, and the data transmitted is solely used to generate relevant content for your article. We take your data privacy seriously and make every effort to protect your information. If you have any concerns or questions, please don't hesitate to contact us.
+
 == Frequently Asked Questions ==
 
 = Why use Bob AI? =

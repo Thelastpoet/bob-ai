@@ -23,7 +23,7 @@ class Bob_Core {
     }
 
     public function run() {
-        require_once BOB_PLUGIN_DIR . 'includes/admin/bob-settings.php';
+        require_once BOB_PLUGIN_DIR . 'admin/bob-settings.php';
         require_once BOB_PLUGIN_DIR . 'stats/bob-stats.php';
 
         $this->settings = new Bob_Settings();

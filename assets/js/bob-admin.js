@@ -1,24 +1,40 @@
-function initBobAdmin() {
-    const apiKeyInput = document.querySelector('[name="bob-openai-api-key"]');
-    const apiKeyToggle = document.querySelector('#bob-api-key-toggle');
+jQuery(document).ready(function ($) {
+    $('#bob-api-key-toggle').on('click', function () {
+        let apiKeyInput = $('input[name="bob-openai-api-key"]');
+        let apiKeyType = apiKeyInput.attr('type');
 
-    if (apiKeyInput && apiKeyToggle) {
-        apiKeyToggle.addEventListener('click', (event) => {
-            event.preventDefault();
+        if (apiKeyType === 'password') {
+            apiKeyInput.attr('type', 'text');
+            $(this).text('Hide');
+        } else {
+            apiKeyInput.attr('type', 'password');
+            $(this).text('Show');
+        }
+    });
 
-            if (apiKeyInput.type === 'password') {
-                apiKeyInput.type = 'text';
-                apiKeyToggle.textContent = 'Hide';
-            } else {
-                apiKeyInput.type = 'password';
-                apiKeyToggle.textContent = 'Show';
-            }
-        });
+    // Handle tab navigation
+    var $tabs = $('.nav-tab-wrapper a');
+    var $content = $('.bob-settings-content > div');
+
+    function setActiveTab(target) {
+        // Set the active tab
+        $tabs.removeClass('nav-tab-active');
+        $('a[href="#' + target + '"]').addClass('nav-tab-active');
+
+        // Show the corresponding content
+        $content.hide();
+        $('#' + target).show();
     }
-}
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBobAdmin);
-} else {
-    initBobAdmin();
-}
+    $tabs.on('click', function(e) {
+        e.preventDefault();
+
+        var target = $(this).attr('href').replace('#', '');
+        setActiveTab(target);
+        localStorage.setItem('bob_active_tab', target);
+    });
+
+    // Show the stored tab or the first tab by default
+    var activeTab = localStorage.getItem('bob_active_tab') || $tabs.first().attr('href').replace('#', '');
+    setActiveTab(activeTab);
+});
