@@ -112,7 +112,7 @@ class Bob_Settings {
 		add_settings_section( 'bob-seo-section', esc_html__( 'Bob SEO Settings', 'bob' ), [ $this, 'render_seo_settings_section' ], 'bob-seo-settings' );
 		add_settings_field( 'bob_seo_optimizer_seo_plugin', esc_html__( 'Select your current SEO plugin from the list:', 'bob' ), [ $this, 'render_seo_plugin_field' ], 'bob-seo-settings', 'bob-seo-section' );
 		add_settings_field( 'bob_seo_optimizer_posts_per_batch', esc_html__( 'Enter the number of posts to process per batch:', 'bob' ), [ $this, 'render_posts_per_batch_field' ], 'bob-seo-settings', 'bob-seo-section' );
-		add_settings_field( 'bob_seo_optimizer_previous_mod_date', esc_html__( 'Enter the number of days the post was last modified:', 'bob' ), [ $this, 'render_previous_mod_date_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_previous_mod_date', esc_html__( 'Enter the number of days since the post was last modified to be eligible for optimization:', 'bob' ), [ $this, 'render_previous_mod_date_field' ], 'bob-seo-settings', 'bob-seo-section' );
 		add_settings_field( 'bob_seo_optimizer_post_type', esc_html__( 'Select the post type to optimize:', 'bob' ), [ $this, 'render_post_type_field' ], 'bob-seo-settings', 'bob-seo-section' );
 		add_settings_field( 'bob_seo_optimizer_order', esc_html__( 'Select the order of posts to optimize:', 'bob' ), [ $this, 'render_order_field' ], 'bob-seo-settings', 'bob-seo-section' );
 		add_settings_field( 'bob_seo_optimizer_meta_max_length', esc_html__( 'Enter the maximum length for meta tags:', 'bob' ), [ $this, 'render_meta_max_length_field' ], 'bob-seo-settings', 'bob-seo-section' );
@@ -229,12 +229,12 @@ class Bob_Settings {
 	}	
 
 	public function render_posts_per_batch_field() {
-		$posts_per_batch = get_option( 'bob_seo_optimizer_posts_per_batch', 10 );
+		$posts_per_batch = get_option( 'bob_seo_optimizer_posts_per_batch', 1 );
 		printf( '<input type="number" name="bob_seo_optimizer_posts_per_batch" value="%d" min="1" />', $posts_per_batch );
 	}
 	
 	public function render_previous_mod_date_field() {
-		$previous_mod_days = get_option( 'bob_seo_optimizer_previous_mod_date', 0 );
+		$previous_mod_days = get_option( 'bob_seo_optimizer_previous_mod_date', 30 );
 		printf( '<input type="number" name="bob_seo_optimizer_previous_mod_date" id="bob_seo_optimizer_previous_mod_date" value="%d" min="0" />', $previous_mod_days );
 	}
 	
