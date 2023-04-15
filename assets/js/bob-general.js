@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 startBobAI.style.display = 'none';
                 stopBobAI.style.display = 'inline-block';
-                showMessage('Bob AI has started updating your descroptions. Please check the Bob Stats section to see the progress. You can click the "Stop Bob AI" button to stop Bob AI.', 'bob-message-success');
+                showMessage('Bob AI has started updating your descriptions. Please check the Bob Stats section to see the progress. You can click the "Stop Bob AI" button to stop Bob AI.', 'bob-message-success');
             } else {
                 showMessage('An error occurred while starting Bob AI. Please try again.', 'bob-message-error');
             }

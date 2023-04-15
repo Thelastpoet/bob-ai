@@ -81,20 +81,24 @@
 }
 
 .help-section {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
     border-radius: 4px;
     padding: 15px;
     margin-bottom: 20px;
     width: calc(100% - 40px);
     max-width: 800px;
 }
+
 /* Adjust the max-width value of the fields descriptions */
 .bob-admin-desc {
     display: inline-block;
     max-width: 600px; 
     word-break: break-word;
+    font-size: 14px !important;
+    line-height: 1.6;
 }
+
 /* Bob Start / Stop Buttons */
 .bob-message {
     margin-top: 20px;
@@ -113,8 +117,15 @@
     border: 1px solid #f5c6cb;
     color: #721c24;
 }
+
 /* Documentation Tab */
 .help-section p {
     font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Documentation Tab */
+.bob-general p {
+    font-size: 16px;
     line-height: 1.6;
 }
