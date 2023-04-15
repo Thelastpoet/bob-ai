@@ -30,6 +30,14 @@ class Bob_Settings {
 		wp_enqueue_script( 'bob-admin', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array( 'jquery' ), BOB_VERSION, true );
 		wp_enqueue_script( 'bob-general', BOB_PLUGIN_URL . 'assets/js/bob-general.js', array( 'jquery' ), BOB_VERSION, true );
 		wp_enqueue_style( 'bob-admin', BOB_PLUGIN_URL . 'assets/css/bob-admin.css', array(), BOB_VERSION );
+
+		$bob_ai_status = get_option( 'bob_ai_status', 'stopped' );
+		$js_data = array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'bobAiStatus' => $bob_ai_status
+		);
+
+		wp_localize_script( 'bob-general', 'bobData', $js_data );
 	}
 
 	public function ajax_start_bob_ai() {
@@ -37,6 +45,7 @@ class Bob_Settings {
 	
 		if (!wp_next_scheduled('bob_optimizer_cron')) {
 			$this->seo_optimizer->schedule_seo_update();
+			update_option('bob_ai_status', 'running');
 		}
 	
 		wp_send_json_success();
@@ -46,6 +55,7 @@ class Bob_Settings {
 		check_ajax_referer('bob_meta_generation_nonce');
 	
 		wp_clear_scheduled_hook('bob_optimizer_cron');
+		update_option('bob_ai_status', 'stopped');
 	
 		wp_send_json_success();
 	}

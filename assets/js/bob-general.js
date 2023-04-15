@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var messageContainer = document.createElement('div');
     messageContainer.classList.add('bob-message');
 
+    if (bobData.bobAiStatus === 'running') {
+        startBobAI.style.display = 'none';
+        stopBobAI.style.display = 'inline-block';
+    } else {
+        startBobAI.style.display = 'inline-block';
+        stopBobAI.style.display = 'none';
+    }
+
     form.parentNode.insertBefore(messageContainer, form.nextSibling);
 
     function showMessage(message, type) {

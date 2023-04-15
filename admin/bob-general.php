@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $api_key = get_option( 'bob-openai-api-key' );
 $settings_saved = $this->bob_settings_saved_notice();
+$bob_ai_status = get_option( 'bob_ai_status' );
 
 if ($settings_saved) {
     ?>
@@ -14,7 +15,7 @@ if ($settings_saved) {
     <?php
 }
 
-$disabled = empty( $api_key ) || !$settings_saved ? 'disabled' : '';
+$disabled = empty( $api_key ) || !$settings_saved || $bob_ai_status === 'stopped' ? '' : 'disabled';
 
 if ( isset( $_POST['start-bob-ai'] ) && $_POST['start-bob-ai'] ) {
     if ( ! wp_next_scheduled( 'bob_optimizer_cron' ) ) {
@@ -27,18 +28,20 @@ if ( isset( $_POST['stop-bob-ai'] ) && $_POST['stop-bob-ai'] ) {
 }
 ?>
 
-<h2><?php _e('Welcome to Bob AI', 'bob'); ?></h2>
-<p>
-    <?php _e('Bob AI helps you optimize and update meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.', 'bob'); ?>
-</p>
-<p>
-    <?php _e('Please configure the OpenAI and SEO settings tabs before starting Bob AI.', 'bob'); ?>
-</p>
+<div class="bob-general">
+    <h2><?php _e('Welcome to Bob AI', 'bob'); ?></h2>
+    <p>
+        <?php _e('Bob AI helps you optimize and update meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.', 'bob'); ?>
+    </p>
+    <p>
+        <?php _e('Please configure the OpenAI and SEO settings tabs before starting Bob AI.', 'bob'); ?>
+    </p>
+</div>
 
 <form method="post">
     <?php wp_nonce_field( 'bob_meta_generation_nonce' ); ?>
     <div>
-        <button id="start-bob-ai" class="button button-primary" name="start-bob-ai" type="submit" <?php echo $disabled; ?>><?php _e('Start Bob AI', 'bob'); ?></button>
-        <button id="stop-bob-ai" class="button button-secondary" name="stop-bob-ai" type="submit" <?php echo ! wp_next_scheduled( 'bob_optimizer_cron' ) ? 'style="display:none;"' : ''; ?>><?php _e('Stop Bob AI', 'bob'); ?></button>
+        <button id="start-bob-ai" class="button button-primary" name="start-bob-ai" type="submit" <?php echo $disabled; ?> <?php echo $start_button_display; ?>><?php _e('Start Bob AI', 'bob'); ?></button>
+        <button id="stop-bob-ai" class="button button-secondary" name="stop-bob-ai" type="submit" <?php echo $stop_button_display; ?>><?php _e('Stop Bob AI', 'bob'); ?></button>
     </div>
 </form>
