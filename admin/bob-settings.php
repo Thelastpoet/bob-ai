@@ -30,8 +30,6 @@ class Bob_Settings {
 		wp_enqueue_script( 'bob-admin', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array( 'jquery' ), BOB_VERSION, true );
 		wp_enqueue_script( 'bob-general', BOB_PLUGIN_URL . 'assets/js/bob-general.js', array( 'jquery' ), BOB_VERSION, true );
 		wp_enqueue_style( 'bob-admin', BOB_PLUGIN_URL . 'assets/css/bob-admin.css', array(), BOB_VERSION );
-		wp_enqueue_script('chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', array(), '4.2.1', true);
-		wp_add_inline_script('chartjs', 'window.Chart = typeof window.Chart === "undefined" ? {} : window.Chart;');
 	}
 
 	public function ajax_start_bob_ai() {
