@@ -37,7 +37,7 @@ Bob AI utilizes the API from [OpenAI](https://platform.openai.com/), which is a 
 * OpenAI Terms of Use: https://openai.com/policies/terms-of-use
 * OpenAI Privacy Policy: https://openai.com/policies/privacy-policy
 
-Please note that the use of this external service is necessary for the proper functioning of the plugin, and the data transmitted is solely used to generate relevant content for your article. We take your data privacy seriously and make every effort to protect your information. If you have any concerns or questions, please don't hesitate to contact us.
+Please note that the use of this external service is necessary for the proper functioning of the plugin, and the data transmitted is solely used to generate relevant content for your article. We take your data privacy seriously and make every effort to protect your information.
 
 == Frequently Asked Questions ==
 
