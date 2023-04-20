@@ -10,7 +10,7 @@ $bob_ai_status = get_option( 'bob_ai_status' );
 if ($settings_saved) {
     ?>
     <div class="notice notice-success is-dismissible">
-        <p><?php esc_html_e( 'Settings saved successfully.', 'bob' ); ?></p>
+        <p><?php esc_html_e( 'Settings saved successfully.', 'bob-ai' ); ?></p>
     </div>
     <?php
 }
@@ -31,19 +31,19 @@ if ( isset( $_POST['stop-bob-ai'] ) && $_POST['stop-bob-ai'] ) {
 ?>
 
 <div class="bob-general">
-    <h2><?php esc_html_e('Welcome to Bob AI', 'bob'); ?></h2>
+    <h2><?php esc_html_e('Welcome to Bob AI', 'bob-ai'); ?></h2>
     <p>
-        <?php esc_html_e('Bob AI helps you optimize and update meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.', 'bob'); ?>
+        <?php esc_html_e('Bob AI helps you optimize and update meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.', 'bob-ai'); ?>
     </p>
     <p>
-        <?php esc_html_e('Please configure the OpenAI and SEO settings tabs before starting Bob AI.', 'bob'); ?>
+        <?php esc_html_e('Please configure the OpenAI and SEO settings tabs before starting Bob AI.', 'bob-ai'); ?>
     </p>
 </div>
 
 <form method="post">
     <?php wp_nonce_field( 'bob_meta_generation_nonce' ); ?>
     <div>
-        <button id="start-bob-ai" class="button button-primary" name="start-bob-ai" type="submit" <?php echo $escaped_disabled; ?> <?php echo esc_attr($start_button_display); ?>><?php esc_html_e('Start Bob AI', 'bob'); ?></button>
-        <button id="stop-bob-ai" class="button button-secondary" name="stop-bob-ai" type="submit" <?php echo esc_attr($stop_button_display); ?>><?php esc_html_e('Stop Bob AI', 'bob'); ?></button>
+        <button id="start-bob-ai" class="button button-primary" name="start-bob-ai" type="submit" <?php echo $escaped_disabled; ?> <?php echo esc_attr($start_button_display); ?>><?php esc_html_e('Start Bob AI', 'bob-ai'); ?></button>
+        <button id="stop-bob-ai" class="button button-secondary" name="stop-bob-ai" type="submit" <?php echo esc_attr($stop_button_display); ?>><?php esc_html_e('Stop Bob AI', 'bob-ai'); ?></button>
     </div>
 </form>

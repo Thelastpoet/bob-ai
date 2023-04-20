@@ -62,8 +62,8 @@ class Bob_Settings {
 
 	public function bob_add_settings_page() {
 		add_menu_page(
-			__( 'Bob Settings', 'bob' ),
-			__( 'Bob', 'bob' ),
+			__( 'Bob Settings', 'bob-ai' ),
+			__( 'bob-ai', 'bob-ai' ),
 			'manage_options',
 			'bob-settings',
 			[ $this, 'bob_render_settings_page' ]
@@ -71,8 +71,8 @@ class Bob_Settings {
 
 		add_submenu_page(
 			'bob-settings',
-			__('Bob Stats', 'bob'),
-			__('Bob Stats', 'bob'),
+			__('Bob Stats', 'bob-ai'),
+			__('Bob Stats', 'bob-ai'),
 			'manage_options',
 			'bob-stats',
 			[$this->bob_stats, 'bob_render_stats_page']
@@ -102,14 +102,14 @@ class Bob_Settings {
 		register_setting( 'bob-openai-settings-group', 'bob-openai-frequency-penalty', [ $this, 'sanitize_float_field_callback' ] );
 		register_setting( 'bob-openai-settings-group', 'bob-openai-presence-penalty', [ $this, 'sanitize_float_field_callback' ] );
 	
-		add_settings_section( 'bob-openai-section', esc_html__( 'OpenAI API Key', 'bob' ), [ $this, 'render_openai_section' ], 'bob-openai-settings' );
-		add_settings_field( 'bob-openai-api-key', esc_html__( 'API Key', 'bob' ), [ $this, 'render_openai_api_key_field' ], 'bob-openai-settings', 'bob-openai-section' );
-		add_settings_field( 'bob-openai-model', esc_html__( 'Model', 'bob' ), [ $this, 'render_openai_model_field' ], 'bob-openai-settings', 'bob-openai-section' );
-		add_settings_field( 'bob-openai-max-tokens', esc_html__( 'Max Tokens', 'bob' ), [ $this, 'render_openai_max_tokens_field' ], 'bob-openai-settings', 'bob-openai-section' );
-		add_settings_field( 'bob-openai-temperature', esc_html__( 'Temperature', 'bob' ), [ $this, 'render_openai_temperature_field' ], 'bob-openai-settings', 'bob-openai-section' );
-		add_settings_field( 'bob-openai-top-p', esc_html__( 'Top P', 'bob' ), [ $this, 'render_openai_top_p_field' ], 'bob-openai-settings', 'bob-openai-section' );
-		add_settings_field( 'bob-openai-frequency-penalty', esc_html__( 'Frequency Penalty', 'bob' ), [ $this, 'render_openai_frequency_penalty_field' ], 'bob-openai-settings', 'bob-openai-section' );
-		add_settings_field( 'bob-openai-presence-penalty', esc_html__( 'Presence Penalty', 'bob' ), [ $this, 'render_openai_presence_penalty_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_section( 'bob-openai-section', esc_html__( 'OpenAI API Key', 'bob-ai' ), [ $this, 'render_openai_section' ], 'bob-openai-settings' );
+		add_settings_field( 'bob-openai-api-key', esc_html__( 'API Key', 'bob-ai' ), [ $this, 'render_openai_api_key_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_field( 'bob-openai-model', esc_html__( 'Model', 'bob-ai' ), [ $this, 'render_openai_model_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_field( 'bob-openai-max-tokens', esc_html__( 'Max Tokens', 'bob-ai' ), [ $this, 'render_openai_max_tokens_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_field( 'bob-openai-temperature', esc_html__( 'Temperature', 'bob-ai' ), [ $this, 'render_openai_temperature_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_field( 'bob-openai-top-p', esc_html__( 'Top P', 'bob-ai' ), [ $this, 'render_openai_top_p_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_field( 'bob-openai-frequency-penalty', esc_html__( 'Frequency Penalty', 'bob-ai' ), [ $this, 'render_openai_frequency_penalty_field' ], 'bob-openai-settings', 'bob-openai-section' );
+		add_settings_field( 'bob-openai-presence-penalty', esc_html__( 'Presence Penalty', 'bob-ai' ), [ $this, 'render_openai_presence_penalty_field' ], 'bob-openai-settings', 'bob-openai-section' );
 
 		// Register SEO settings.
 		register_setting( 'bob-seo-settings-group', 'bob_seo_optimizer_seo_plugin', [ $this, 'sanitize_seo_plugin' ] );
@@ -119,13 +119,13 @@ class Bob_Settings {
 		register_setting( 'bob-seo-settings-group', 'bob_seo_optimizer_order', [ $this, 'sanitize_text_field_callback' ] );
 		register_setting( 'bob-seo-settings-group', 'bob_seo_optimizer_meta_max_length', [ $this, 'sanitize_integer_field_callback' ] );
 	
-		add_settings_section( 'bob-seo-section', esc_html__( 'Bob SEO Settings', 'bob' ), [ $this, 'render_seo_settings_section' ], 'bob-seo-settings' );
-		add_settings_field( 'bob_seo_optimizer_seo_plugin', esc_html__( 'Select your current SEO plugin from the list:', 'bob' ), [ $this, 'render_seo_plugin_field' ], 'bob-seo-settings', 'bob-seo-section' );
-		add_settings_field( 'bob_seo_optimizer_posts_per_batch', esc_html__( 'Enter the number of posts to process per batch:', 'bob' ), [ $this, 'render_posts_per_batch_field' ], 'bob-seo-settings', 'bob-seo-section' );
-		add_settings_field( 'bob_seo_optimizer_previous_mod_date', esc_html__( 'Enter the number of days since the post was last modified to be eligible for optimization:', 'bob' ), [ $this, 'render_previous_mod_date_field' ], 'bob-seo-settings', 'bob-seo-section' );
-		add_settings_field( 'bob_seo_optimizer_post_type', esc_html__( 'Select the post type to optimize:', 'bob' ), [ $this, 'render_post_type_field' ], 'bob-seo-settings', 'bob-seo-section' );
-		add_settings_field( 'bob_seo_optimizer_order', esc_html__( 'Select the order of posts to optimize:', 'bob' ), [ $this, 'render_order_field' ], 'bob-seo-settings', 'bob-seo-section' );
-		add_settings_field( 'bob_seo_optimizer_meta_max_length', esc_html__( 'Enter the maximum length for meta tags:', 'bob' ), [ $this, 'render_meta_max_length_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_section( 'bob-seo-section', esc_html__( 'Bob SEO Settings', 'bob-ai' ), [ $this, 'render_seo_settings_section' ], 'bob-seo-settings' );
+		add_settings_field( 'bob_seo_optimizer_seo_plugin', esc_html__( 'Select your current SEO plugin from the list:', 'bob-ai' ), [ $this, 'render_seo_plugin_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_posts_per_batch', esc_html__( 'Enter the number of posts to process per batch:', 'bob-ai' ), [ $this, 'render_posts_per_batch_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_previous_mod_date', esc_html__( 'Enter the number of days since the post was last modified to be eligible for optimization:', 'bob-ai' ), [ $this, 'render_previous_mod_date_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_post_type', esc_html__( 'Select the post type to optimize:', 'bob-ai' ), [ $this, 'render_post_type_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_order', esc_html__( 'Select the order of posts to optimize:', 'bob-ai' ), [ $this, 'render_order_field' ], 'bob-seo-settings', 'bob-seo-section' );
+		add_settings_field( 'bob_seo_optimizer_meta_max_length', esc_html__( 'Enter the maximum length for meta tags:', 'bob-ai' ), [ $this, 'render_meta_max_length_field' ], 'bob-seo-settings', 'bob-seo-section' );
 	}
 	public function sanitize_text_field_callback( $value ) {
 		return sanitize_text_field( $value );
@@ -140,15 +140,15 @@ class Bob_Settings {
 	}
 
 	public function render_openai_section() {
-		echo esc_html__( 'Enter your OpenAI API Key and choose a Model to get started.', 'bob' );
+		echo esc_html__( 'Enter your OpenAI API Key and choose a Model to get started.', 'bob-ai' );
 	}
 
 	public function render_openai_api_key_field() {
 		$api_key = get_option( 'bob-openai-api-key' );
-		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob' ), '<a href="https://beta.openai.com/signup/" target="_blank">openai.com</a>' );
-		$tooltip = esc_attr__( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob' );
+		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob-ai' ), '<a href="https://beta.openai.com/signup/" target="_blank">openai.com</a>' );
+		$tooltip = esc_attr__( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob-ai' );
 	
-		printf( '<div class="bob-tooltip-container"><input type="password" name="bob-openai-api-key" value="%s" autocomplete="off" /><span class="bob-tooltip">%s</span><button id="bob-api-key-toggle" type="button">%s</button></div><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), esc_html__( 'Show', 'bob' ), $description );
+		printf( '<div class="bob-tooltip-container"><input type="password" name="bob-openai-api-key" value="%s" autocomplete="off" /><span class="bob-tooltip">%s</span><button id="bob-api-key-toggle" type="button">%s</button></div><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), esc_html__( 'Show', 'bob-ai' ), $description );
 	}
 
 	public function render_openai_model_field() {
@@ -172,31 +172,31 @@ class Bob_Settings {
 
 	public function render_openai_max_tokens_field() {
 		$max_tokens = get_option('bob-openai-max-tokens', 37);
-		$description = sprintf(__('Set the Max token value between 37 and 39 for optimal results. Note that the generated description may be longer than the recommended length, but it is still acceptable.', 'bob'));
+		$description = sprintf(__('Set the Max token value between 37 and 39 for optimal results. Note that the generated description may be longer than the recommended length, but it is still acceptable.', 'bob-ai'));
 		printf('<input type="number" name="bob-openai-max-tokens" value="%d" min="1" /><br /><span class="description bob-admin-desc">%s</span>', $max_tokens, $description);
 	}
 	
 	public function render_openai_temperature_field() {
 		$temperature = get_option('bob-openai-temperature', 0.7);
-		$description = sprintf(__('The temperature value determines the randomness of the output. A higher value (e.g., 1.0) makes the output more random, while a lower value (e.g., 0.1) makes it more focused and deterministic.', 'bob'));
+		$description = sprintf(__('The temperature value determines the randomness of the output. A higher value (e.g., 1.0) makes the output more random, while a lower value (e.g., 0.1) makes it more focused and deterministic.', 'bob-ai'));
 		printf('<input type="number" name="bob-openai-temperature" value="%.2f" min="0.0" step="0.01" /><br /><span class="description bob-admin-desc">%s</span>', $temperature, $description);
 	}
 	
 	public function render_openai_top_p_field() {
 		$top_p = get_option('bob-openai-top-p', 1.0);
-		$description = sprintf(__('The top_p value is used for nucleus sampling. It selects the highest probability tokens whose cumulative probability mass is equal to or below the given value. This provides a dynamic balance between diversity and focus in the output.', 'bob'));
+		$description = sprintf(__('The top_p value is used for nucleus sampling. It selects the highest probability tokens whose cumulative probability mass is equal to or below the given value. This provides a dynamic balance between diversity and focus in the output.', 'bob-ai'));
 		printf('<input type="number" name="bob-openai-top-p" value="%.2f" min="0.0" step="0.01" /><br /><span class="description bob-admin-desc">%s</span>', $top_p, $description);
 	}
 	
 	public function render_openai_frequency_penalty_field() {
 		$frequency_penalty = get_option('bob-openai-frequency-penalty', 0.0);
-		$description = sprintf(__('The frequency penalty adjusts the likelihood of tokens based on their frequency in the training data. Positive values make rare tokens more likely, while negative values make common tokens more likely.', 'bob'));
+		$description = sprintf(__('The frequency penalty adjusts the likelihood of tokens based on their frequency in the training data. Positive values make rare tokens more likely, while negative values make common tokens more likely.', 'bob-ai'));
 		printf('<input type="number" name="bob-openai-frequency-penalty" value="%.2f" min="-2.0" max="2.0" step="0.01" /><br /><span class="description bob-admin-desc">%s</span>', $frequency_penalty, $description);
 	}
 	
 	public function render_openai_presence_penalty_field() {
 		$presence_penalty = get_option('bob-openai-presence-penalty', 0.0);
-		$description = sprintf(__('The presence penalty adjusts the likelihood of tokens based on their presence in the generated text so far. Positive values make tokens less likely to be repeated, while negative values make tokens more likely to be repeated.', 'bob'));
+		$description = sprintf(__('The presence penalty adjusts the likelihood of tokens based on their presence in the generated text so far. Positive values make tokens less likely to be repeated, while negative values make tokens more likely to be repeated.', 'bob-ai'));
 		printf('<input type="number" name="bob-openai-presence-penalty" value="%.2f" min="-2.0" max="2.0" step="0.01" /><br /><span class="description bob-admin-desc">%s</span>', $presence_penalty, $description);
 	}
 
@@ -267,8 +267,8 @@ class Bob_Settings {
 	public function render_order_field() {
 		$order = get_option( 'bob_seo_optimizer_order', 'asc' );
 		$order_options = [
-			'asc' => __( 'Oldest first', 'bob' ),
-			'desc' => __( 'Newest first', 'bob' ),
+			'asc' => __( 'Oldest first', 'bob-ai' ),
+			'desc' => __( 'Newest first', 'bob-ai' ),
 		];
 	
 		echo '<select name="bob_seo_optimizer_order" id="bob-seo-optimizer-order">';
@@ -292,13 +292,13 @@ class Bob_Settings {
 	
 		?>
 		<div class="wrap bob-settings-wrap">
-			<h2><?php _e( 'Bob Settings', 'bob' ); ?></h2>
+			<h2><?php _e( 'Bob Settings', 'bob-ai' ); ?></h2>
 			<div class="bob-tabs-container">
 				<h2 class="nav-tab-wrapper">
-					<a href="#general_settings_section" class="nav-tab"><?php _e( 'General', 'bob' ); ?></a>
-					<a href="#openai_settings_section" class="nav-tab"><?php _e( 'OpenAI', 'bob' ); ?></a>
-					<a href="#seo_settings_section" class="nav-tab"><?php _e( 'SEO', 'bob' ); ?></a>
-					<a href="#help_documents_section" class="nav-tab"><?php _e( 'Documentation', 'bob' ); ?></a>
+					<a href="#general_settings_section" class="nav-tab"><?php _e( 'General', 'bob-ai' ); ?></a>
+					<a href="#openai_settings_section" class="nav-tab"><?php _e( 'OpenAI', 'bob-ai' ); ?></a>
+					<a href="#seo_settings_section" class="nav-tab"><?php _e( 'SEO', 'bob-ai' ); ?></a>
+					<a href="#help_documents_section" class="nav-tab"><?php _e( 'Documentation', 'bob-ai' ); ?></a>
 				</h2>
 				<div class="bob-settings-content">
 					<div id="general_settings_section" class="bob-settings-tab">
@@ -323,7 +323,7 @@ class Bob_Settings {
 								</form>
 							</div>						
 					<div id="help_documents_section" class="bob-settings-tab">
-						<h2><?php _e('Documentation', 'bob'); ?></h2>
+						<h2><?php _e('Documentation', 'bob-ai'); ?></h2>
 						<?php include BOB_PLUGIN_DIR . 'admin/bob-doc.php'; ?>
 					</div>
 				</div>
