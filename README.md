@@ -28,9 +28,10 @@ Please note that the use of this external service is necessary for the proper fu
 ## Installation
 
 * Obtain an OpenAI API key from the OpenAI website. You will need this key to use the Bob AI plugin.
-* Upload the plugin files to the /wp-content/plugins/bob-ai directory, or install the plugin through the WordPress plugins screen directly.
-* Activate the plugin through the 'Plugins' screen in WordPress
-* Use the Bob AI screen to configure the plugin with your OpenAI API key, Model and select the current installed SEO Plugin.
+* Upload the plugin files to the `/wp-content/plugins/bob-ai` directory, or install the plugin through the <a href="https://wordpress.org/plugins/bob-ai/">WordPress plugins</a> Menu directly.
+* Activate the plugin through the 'Plugins' Menu in WordPress
+* Use the Bob AI Menu to configure the plugin with your OpenAI API key, Model, and select the current installed SEO Plugin.
+
     
 ## FAQ
 
