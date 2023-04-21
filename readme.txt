@@ -1,14 +1,14 @@
 === Bob AI ===
 Contributors: smartkenyan
 Tags: SEO, AI, OpenAI, meta descriptions, descriptions, GPT, GPT3.5
-Requires at least: 5.3 or higher
+Requires at least: 5.9 or higher
 Tested up to: 6.1.1
 Stable tag: 1.0.0
-Requires PHP: 7.0 or higher
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-A WordPress plugin that optimizes and updates meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.
+Bob AI is a WordPress plugin that optimizes and updates WordPress meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.
 
 == Description ==
 
