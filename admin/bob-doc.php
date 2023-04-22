@@ -8,7 +8,7 @@
 <!-- Start Section 2 -->
 <div class="help-section">
     <h3><?php _e('Scheduling Optimization', 'bob-ai'); ?></h3>
-    <p><?php _e('Bob AI uses a scheduler to automatically update meta descriptions. You can start or stop the scheduler at any time by clicking the "Start Bob AI" or "Stop Bob AI" buttons on the main plugin page. While the scheduler is running, Bob AI will periodically optimize meta descriptions using OpenAI.', 'bob-ai'); ?></p>
+    <p><?php _e('Bob AI uses a scheduler to automatically update meta descriptions randomly between 1 and 3 hours. You can start or stop the scheduler at any time by clicking the "Start Bob AI" or "Stop Bob AI" buttons on the main plugin page. While the scheduler is running, Bob AI will periodically optimize meta descriptions using OpenAI.', 'bob-ai'); ?></p>
 </div>
 <!-- End Section 2 -->
 

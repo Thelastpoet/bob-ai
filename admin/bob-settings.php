@@ -26,22 +26,28 @@ class Bob_Settings {
     	add_action('wp_ajax_stop_bob_ai', [$this, 'ajax_stop_bob_ai']);
 	}
 
-	public function enqueue_admin_scripts() {
-		wp_enqueue_script( 'bob-admin', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array( 'jquery' ), BOB_VERSION, true );
-		wp_enqueue_script( 'bob-general', BOB_PLUGIN_URL . 'assets/js/bob-general.js', array( 'jquery' ), BOB_VERSION, true );
-		wp_enqueue_style( 'bob-admin', BOB_PLUGIN_URL . 'assets/css/bob-admin.css', array(), BOB_VERSION );
-
-		$bob_ai_status = get_option( 'bob_ai_status', 'stopped' );
+	public function enqueue_admin_scripts($hook_suffix) {
+		if ($hook_suffix != 'toplevel_page_bob-settings' && $hook_suffix != 'bob-ai_page_bob-stats') {
+			return;
+		}
+	
+		wp_enqueue_script('bob-admin', BOB_PLUGIN_URL . 'assets/js/bob-admin.js', array('jquery'), BOB_VERSION, true);
+		wp_enqueue_script('bob-general', BOB_PLUGIN_URL . 'assets/js/bob-general.js', array('jquery'), BOB_VERSION, true);
+		wp_enqueue_style('bob-admin', BOB_PLUGIN_URL . 'assets/css/bob-admin.css', array(), BOB_VERSION);
+	
+		$bob_ai_status = get_option('bob_ai_status', 'stopped');
 		$js_data = array(
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'bobAiStatus' => $bob_ai_status
+			'ajaxurl' => admin_url('admin-ajax.php'),
+			'bobAiStatus' => $bob_ai_status,
+			'startNonce' => wp_create_nonce('start_bob_meta_generation_nonce'),
+			'stopNonce' => wp_create_nonce('stop_bob_meta_generation_nonce'),
 		);
-
-		wp_localize_script( 'bob-general', 'bobData', $js_data );
-	}
+	
+		wp_localize_script('bob-general', 'bobData', $js_data);
+	}	
 
 	public function ajax_start_bob_ai() {
-		check_ajax_referer('bob_meta_generation_nonce');
+		check_ajax_referer('start_bob_meta_generation_nonce');
 	
 		if (!wp_next_scheduled('bob_optimizer_cron')) {
 			$this->seo_optimizer->schedule_seo_update();
@@ -52,7 +58,7 @@ class Bob_Settings {
 	}
 	
 	public function ajax_stop_bob_ai() {
-		check_ajax_referer('bob_meta_generation_nonce');
+		check_ajax_referer('stop_bob_meta_generation_nonce');
 	
 		wp_clear_scheduled_hook('bob_optimizer_cron');
 		update_option('bob_ai_status', 'stopped');
@@ -66,7 +72,8 @@ class Bob_Settings {
 			__( 'bob-ai', 'bob-ai' ),
 			'manage_options',
 			'bob-settings',
-			[ $this, 'bob_render_settings_page' ]
+			[ $this, 'bob_render_settings_page' ],
+			'dashicons-index-card'
 		);
 
 		add_submenu_page(
@@ -102,7 +109,7 @@ class Bob_Settings {
 		register_setting( 'bob-openai-settings-group', 'bob-openai-frequency-penalty', [ $this, 'sanitize_float_field_callback' ] );
 		register_setting( 'bob-openai-settings-group', 'bob-openai-presence-penalty', [ $this, 'sanitize_float_field_callback' ] );
 	
-		add_settings_section( 'bob-openai-section', esc_html__( 'OpenAI API Key', 'bob-ai' ), [ $this, 'render_openai_section' ], 'bob-openai-settings' );
+		add_settings_section( 'bob-openai-section', esc_html__( 'OpenAI API Settings', 'bob-ai' ), [ $this, 'render_openai_section' ], 'bob-openai-settings' );
 		add_settings_field( 'bob-openai-api-key', esc_html__( 'API Key', 'bob-ai' ), [ $this, 'render_openai_api_key_field' ], 'bob-openai-settings', 'bob-openai-section' );
 		add_settings_field( 'bob-openai-model', esc_html__( 'Model', 'bob-ai' ), [ $this, 'render_openai_model_field' ], 'bob-openai-settings', 'bob-openai-section' );
 		add_settings_field( 'bob-openai-max-tokens', esc_html__( 'Max Tokens', 'bob-ai' ), [ $this, 'render_openai_max_tokens_field' ], 'bob-openai-settings', 'bob-openai-section' );
@@ -148,7 +155,7 @@ class Bob_Settings {
 		$description = sprintf( __( 'Enter your OpenAI API key. You can get one by creating an account at %s.', 'bob-ai' ), '<a href="https://beta.openai.com/signup/" target="_blank">openai.com</a>' );
 		$tooltip = esc_attr__( 'Your OpenAI API key is a secret code that identifies your account and allows you to access OpenAI\'s language processing services.', 'bob-ai' );
 	
-		printf( '<div class="bob-tooltip-container"><input type="password" name="bob-openai-api-key" value="%s" autocomplete="off" /><span class="bob-tooltip">%s</span><button id="bob-api-key-toggle" type="button">%s</button></div><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), esc_html__( 'Show', 'bob-ai' ), $description );
+		printf( '<div class="bob-tooltip-container"><input type="password" name="bob-openai-api-key" value="%s" autocomplete="new-password" /><span class="bob-tooltip">%s</span><button id="bob-api-key-toggle" type="button">%s</button></div><br /><span class="description">%s</span>', esc_attr( $api_key ), esc_attr( $tooltip ), esc_html__( 'Show', 'bob-ai' ), $description );
 	}
 
 	public function render_openai_model_field() {
@@ -168,7 +175,8 @@ class Bob_Settings {
 			echo '<option value="' . esc_attr($key) . '" ' . $selected . '>' . esc_html($value) . '</option>';
 		}
 		echo '</select>';
-	}	
+		echo '<br /><span class="description">' . esc_html__( 'Only select GPT-4 if you have GPT-4 enabled inn your OpenAI account.', 'bob-ai' ) . '</span>'; // Added the description here
+	}
 
 	public function render_openai_max_tokens_field() {
 		$max_tokens = get_option('bob-openai-max-tokens', 37);

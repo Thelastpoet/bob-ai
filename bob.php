@@ -2,14 +2,15 @@
 
 /**
  * Plugin Name: Bob AI
- * Description: A WordPress plugin that optimizes and updates meta descriptions using OpenAI to improve search engine visibility and boost click-through rates.
+ * Description: Update your WordPress meta descriptions and improve your On-Page SEO with Bob AI..
  * Author: Ammanulah Emmanuel
  * Author URI: https://nabaleka.com
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 5.9
- * Requires PHP: 7.0
- * License: GPLv2 or later
- * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * Requires PHP: 7.2.5
+ * License: GPLv3
+ * License URI: http://www.gnu.org/licenses/gpl.html
+ * 
  * Text Domain: bob-ai
  * 
  * @package Bob-AI
@@ -20,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-define( 'BOB_VERSION', '1.0.0' );
+define( 'BOB_VERSION', '1.0.1' );
 define( 'BOB_PLUGIN_FILE', __FILE__ );
 define( 'BOB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BOB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -33,7 +34,7 @@ require_once BOB_PLUGIN_DIR . 'bob-core.php';
 /**
  * Begin bob execution.
  *
- * @since 1.1.0
+ * @since 1.0.0
  */
 function run_bob() {
     $bob = Bob_Core::get_instance( BOB_PLUGIN_FILE );
